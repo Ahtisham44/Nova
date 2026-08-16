@@ -8,6 +8,10 @@ A systematic design foundation and React 19 component library engineered for hig
 - **Live Preview:** [https://jolly-genie-0d17b6.netlify.app](https://jolly-genie-0d17b6.netlify.app)
 - **Figma Make:** [NOVA Fintech Design System](https://www.figma.com/make/mi7kEHG7bztgyTJEMjFJ45/NOVA-Fintech-Design-System?t=iDywCezWnRT1yxTi-1)
 - **Figma Design:** [Nova Design](https://www.figma.com/design/6xzNmO2q2TbsDNrsaOtu6c/Nova-design?node-id=1-2&t=Bw8TSSBXn7ywq6JF-1)
+- **Figma Home Variations:** [Home page variations](https://www.figma.com/make/yTGjUXdsZ9Vou8FJzY58xr/Create-NOVA-Home-Variations?t=9QyvzfKBb7Mq4R3d-1)
+
+![Home page variations](screenshots/home-variations.jpg)
+
 - **Journey:** End-to-end interactive "Send Money" flow (Loading → Home → Amount → Recipient → Review → Success) built entirely with NOVA tokens & components.
 
 ![Mobile Flow made by NOVA](screenshots/send-money-flow.jpg)
