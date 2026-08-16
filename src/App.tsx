@@ -1,15 +1,35 @@
 import { useState } from 'react'
 import type { CSSProperties, ReactNode } from 'react'
+import {
+  Icon,
+  Spinner,
+  Button,
+  TextInput,
+  Select,
+  Checkbox,
+  Toggle,
+  Badge,
+  Avatar,
+  AvatarGroup,
+  Card,
+  MetricCard,
+  AccountCard,
+  GradientCard,
+  TransactionList,
+  EmptyState,
+  Skeleton,
+  ICON_PATHS,
+} from '@/components'
+import type { ButtonVariant, BadgeVariant } from '@/components'
+import { nova, neutral, semantic, intentPalette, gradients, spacing, radius, shadow, typeScale, duration, ease } from '@/tokens'
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+// ─── Navigation ───────────────────────────────────────────────────────────────
 
 type NavId =
   | 'overview' | 'colors' | 'typography' | 'spacing'
   | 'radius' | 'elevation' | 'motion'
   | 'buttons' | 'inputs' | 'cards' | 'badges' | 'icons' | 'states'
   | 'tokens'
-
-// ─── Navigation ───────────────────────────────────────────────────────────────
 
 const NAV: { group: string; items: { id: NavId; label: string }[] }[] = [
   {
@@ -41,154 +61,136 @@ const NAV: { group: string; items: { id: NavId; label: string }[] }[] = [
   },
 ]
 
-// ─── Color Data ───────────────────────────────────────────────────────────────
+// ─── Color Data (sourced from tokens) ─────────────────────────────────────────
 
 const GREEN_SCALE = [
-  { name: 'Green 50', token: '--color-nova-50', hex: '#F0FDF4', dark: false },
-  { name: 'Green 100', token: '--color-nova-100', hex: '#DCFCE7', dark: false },
-  { name: 'Green 200', token: '--color-nova-200', hex: '#BBF7D0', dark: false },
-  { name: 'Green 300', token: '--color-nova-300', hex: '#86EFAC', dark: false },
-  { name: 'Green 400', token: '--color-nova-400', hex: '#4ADE80', dark: false },
-  { name: 'Green 500', token: '--color-nova-500', hex: '#22C55E', dark: false },
-  { name: 'Green 600', token: '--color-nova-600', hex: '#16A34A', dark: true },
-  { name: 'Green 700', token: '--color-nova-700', hex: '#15803D', dark: true },
-  { name: 'Green 800', token: '--color-nova-800', hex: '#166534', dark: true },
-  { name: 'Green 900', token: '--color-nova-900', hex: '#14532D', dark: true },
+  { name: 'Green 50', token: '--color-nova-50', hex: nova[50], dark: false },
+  { name: 'Green 100', token: '--color-nova-100', hex: nova[100], dark: false },
+  { name: 'Green 200', token: '--color-nova-200', hex: nova[200], dark: false },
+  { name: 'Green 300', token: '--color-nova-300', hex: nova[300], dark: false },
+  { name: 'Green 400', token: '--color-nova-400', hex: nova[400], dark: false },
+  { name: 'Green 500', token: '--color-nova-500', hex: nova[500], dark: false },
+  { name: 'Green 600', token: '--color-nova-600', hex: nova[600], dark: true },
+  { name: 'Green 700', token: '--color-nova-700', hex: nova[700], dark: true },
+  { name: 'Green 800', token: '--color-nova-800', hex: nova[800], dark: true },
+  { name: 'Green 900', token: '--color-nova-900', hex: nova[900], dark: true },
 ]
 
 const NEUTRAL_SCALE = [
-  { name: '50', hex: '#FAFAFA', dark: false },
-  { name: '100', hex: '#F5F5F5', dark: false },
-  { name: '200', hex: '#E5E5E5', dark: false },
-  { name: '300', hex: '#D4D4D4', dark: false },
-  { name: '400', hex: '#A3A3A3', dark: false },
-  { name: '500', hex: '#737373', dark: true },
-  { name: '600', hex: '#525252', dark: true },
-  { name: '700', hex: '#404040', dark: true },
-  { name: '800', hex: '#262626', dark: true },
-  { name: '900', hex: '#171717', dark: true },
-  { name: '950', hex: '#0A0A0A', dark: true },
+  { name: '50', hex: neutral[50], dark: false },
+  { name: '100', hex: neutral[100], dark: false },
+  { name: '200', hex: neutral[200], dark: false },
+  { name: '300', hex: neutral[300], dark: false },
+  { name: '400', hex: neutral[400], dark: false },
+  { name: '500', hex: neutral[500], dark: true },
+  { name: '600', hex: neutral[600], dark: true },
+  { name: '700', hex: neutral[700], dark: true },
+  { name: '800', hex: neutral[800], dark: true },
+  { name: '900', hex: neutral[900], dark: true },
+  { name: '950', hex: neutral[950], dark: true },
 ]
 
 const SEMANTIC_COLORS = [
-  { name: 'Success', hex: '#16A34A', bg: '#F0FDF4', border: '#DCFCE7', textColor: '#15803D', desc: 'Positive outcomes and confirmed states' },
-  { name: 'Warning', hex: '#F59E0B', bg: '#FFFBEB', border: '#FEF3C7', textColor: '#92400E', desc: 'Caution and pending states' },
-  { name: 'Error', hex: '#DC2626', bg: '#FEF2F2', border: '#FEE2E2', textColor: '#B91C1C', desc: 'Failures and destructive actions' },
-  { name: 'Info', hex: '#2563EB', bg: '#EFF6FF', border: '#DBEAFE', textColor: '#1E40AF', desc: 'Informational alerts and guidance' },
+  { name: 'Success', hex: semantic.success, bg: intentPalette.success.bg, border: intentPalette.success.border, textColor: intentPalette.success.text, desc: 'Positive outcomes and confirmed states' },
+  { name: 'Warning', hex: semantic.warning, bg: intentPalette.warning.bg, border: intentPalette.warning.border, textColor: intentPalette.warning.text, desc: 'Caution and pending states' },
+  { name: 'Error', hex: semantic.error, bg: intentPalette.error.bg, border: intentPalette.error.border, textColor: intentPalette.error.text, desc: 'Failures and destructive actions' },
+  { name: 'Info', hex: semantic.info, bg: intentPalette.info.bg, border: intentPalette.info.border, textColor: intentPalette.info.text, desc: 'Informational alerts and guidance' },
 ]
 
 const GRADIENTS = [
-  { name: 'Hero', token: '--gradient-hero', value: 'linear-gradient(135deg, #16A34A 0%, #166534 100%)', desc: 'Hero sections, primary CTAs', gradient: 'linear-gradient(135deg, #16A34A 0%, #166534 100%)' },
-  { name: 'Surface', token: '--gradient-surface', value: 'linear-gradient(180deg, #F0FDF4 0%, #FFFFFF 100%)', desc: 'Section backgrounds, page zones', gradient: 'linear-gradient(180deg, #F0FDF4 0%, #FFFFFF 100%)' },
-  { name: 'Card', token: '--gradient-card', value: 'linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%)', desc: 'Featured and premium cards', gradient: 'linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%)' },
-  { name: 'Accent', token: '--gradient-accent', value: 'linear-gradient(90deg, #16A34A 0%, #22C55E 100%)', desc: 'Progress bars, accent elements', gradient: 'linear-gradient(90deg, #16A34A 0%, #22C55E 100%)' },
+  { name: 'Hero', token: '--gradient-hero', value: gradients.hero, desc: 'Hero sections, primary CTAs', gradient: gradients.hero },
+  { name: 'Surface', token: '--gradient-surface', value: gradients.surface, desc: 'Section backgrounds, page zones', gradient: gradients.surface },
+  { name: 'Card', token: '--gradient-card', value: gradients.card, desc: 'Featured and premium cards', gradient: gradients.card },
+  { name: 'Accent', token: '--gradient-accent', value: gradients.accent, desc: 'Progress bars, accent elements', gradient: gradients.accent },
 ]
 
-// ─── Typography Data ──────────────────────────────────────────────────────────
-// Line-height: 100% for size ≥ 32px · 130% for size < 32px
+// ─── Typography Data (sourced from tokens) ────────────────────────────────────
+// Line-height: 100% for size >= 32px · 130% for size < 32px
 
 const TYPE_SCALE = [
-  { name: 'Display', size: 40, lh: 40, weight: 700, rule: '100%', sample: 'Financial clarity, engineered.' },
-  { name: 'Heading 1', size: 32, lh: 32, weight: 700, rule: '100%', sample: 'Account Overview' },
-  { name: 'Heading 2', size: 24, lh: 31, weight: 600, rule: '130%', sample: 'Transaction History' },
-  { name: 'Heading 3', size: 20, lh: 26, weight: 600, rule: '130%', sample: 'Payment Methods' },
-  { name: 'Heading 4', size: 18, lh: 23, weight: 600, rule: '130%', sample: 'Card Details' },
-  { name: 'Body LG', size: 16, lh: 21, weight: 400, rule: '130%', sample: 'Your NOVA balance reflects all confirmed transactions as of today.' },
-  { name: 'Body SM', size: 14, lh: 18, weight: 400, rule: '130%', sample: 'Transfers may take up to 3 business days to process and appear in your account.' },
-  { name: 'Caption', size: 12, lh: 16, weight: 400, rule: '130%', sample: 'Last updated: Aug 16, 2026 · 09:41 AM EST · FDIC insured up to $250,000' },
+  { name: 'Display', size: typeScale.display.fontSize, lh: typeScale.display.lineHeight, weight: typeScale.display.fontWeight, rule: '100%', sample: 'Financial clarity, engineered.' },
+  { name: 'Heading 1', size: typeScale.h1.fontSize, lh: typeScale.h1.lineHeight, weight: typeScale.h1.fontWeight, rule: '100%', sample: 'Account Overview' },
+  { name: 'Heading 2', size: typeScale.h2.fontSize, lh: typeScale.h2.lineHeight, weight: typeScale.h2.fontWeight, rule: '130%', sample: 'Transaction History' },
+  { name: 'Heading 3', size: typeScale.h3.fontSize, lh: typeScale.h3.lineHeight, weight: typeScale.h3.fontWeight, rule: '130%', sample: 'Payment Methods' },
+  { name: 'Heading 4', size: typeScale.h4.fontSize, lh: typeScale.h4.lineHeight, weight: typeScale.h4.fontWeight, rule: '130%', sample: 'Card Details' },
+  { name: 'Body LG', size: typeScale.bodyLg.fontSize, lh: typeScale.bodyLg.lineHeight, weight: typeScale.bodyLg.fontWeight, rule: '130%', sample: 'Your NOVA balance reflects all confirmed transactions as of today.' },
+  { name: 'Body SM', size: typeScale.bodySm.fontSize, lh: typeScale.bodySm.lineHeight, weight: typeScale.bodySm.fontWeight, rule: '130%', sample: 'Transfers may take up to 3 business days to process and appear in your account.' },
+  { name: 'Caption', size: typeScale.caption.fontSize, lh: typeScale.caption.lineHeight, weight: typeScale.caption.fontWeight, rule: '130%', sample: 'Last updated: Aug 16, 2026 · 09:41 AM EST · FDIC insured up to $250,000' },
 ]
 
-// ─── Spacing Data ─────────────────────────────────────────────────────────────
+// ─── Spacing / Radius / Elevation / Motion Data (sourced from tokens) ─────────
 
-const SPACING_SCALE = [
-  { token: 'space-0', value: '0px', px: 0 },
-  { token: 'space-0.5', value: '2px', px: 2 },
-  { token: 'space-1', value: '4px', px: 4 },
-  { token: 'space-1.5', value: '6px', px: 6 },
-  { token: 'space-2', value: '8px', px: 8 },
-  { token: 'space-3', value: '12px', px: 12 },
-  { token: 'space-4', value: '16px', px: 16 },
-  { token: 'space-5', value: '20px', px: 20 },
-  { token: 'space-6', value: '24px', px: 24 },
-  { token: 'space-8', value: '32px', px: 32 },
-  { token: 'space-10', value: '40px', px: 40 },
-  { token: 'space-12', value: '48px', px: 48 },
-  { token: 'space-16', value: '64px', px: 64 },
-  { token: 'space-20', value: '80px', px: 80 },
-  { token: 'space-24', value: '96px', px: 96 },
-]
-
-// ─── Radius Data (4 steps only) ───────────────────────────────────────────────
+const SPACING_SCALE = Object.entries(spacing).map(([step, value]) => ({
+  token: `space-${step}`,
+  value,
+  px: parseInt(value),
+}))
 
 const RADIUS_SCALE = [
-  { name: 'SM', token: '--radius-sm', value: '4px', px: 4, usage: 'Tags, small chips, minor accents' },
-  { name: 'MD', token: '--radius-md', value: '8px', px: 8, usage: 'Buttons, inputs, dropdowns, nav items' },
-  { name: 'LG', token: '--radius-lg', value: '12px', px: 12, usage: 'Cards, panels, modals, page sections' },
-  { name: 'Full', token: '--radius-full', value: '9999px', px: 9999, usage: 'Badges, pills, avatars, toggles' },
+  { name: 'SM', token: '--radius-sm', value: radius.sm, px: 4, usage: 'Tags, small chips, minor accents' },
+  { name: 'MD', token: '--radius-md', value: radius.md, px: 8, usage: 'Buttons, inputs, dropdowns, nav items' },
+  { name: 'LG', token: '--radius-lg', value: radius.lg, px: 12, usage: 'Cards, panels, modals, page sections' },
+  { name: 'Full', token: '--radius-full', value: radius.full, px: 9999, usage: 'Badges, pills, avatars, toggles' },
 ]
-
-// ─── Elevation Data ───────────────────────────────────────────────────────────
 
 const ELEVATION_LEVELS = [
-  { name: 'Level 0', token: '--shadow-none', value: 'none', desc: 'Flat, inline elements', shadow: 'none' },
-  { name: 'Level 1', token: '--shadow-xs', value: '0 1px 2px rgba(0,0,0,0.06)', desc: 'Inputs, chips', shadow: '0 1px 2px rgba(0,0,0,0.06)' },
-  { name: 'Level 2', token: '--shadow-sm', value: '0 4px 8px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.08)', desc: 'Cards, panels', shadow: '0 4px 8px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.08)' },
-  { name: 'Level 3', token: '--shadow-md', value: '0 10px 20px rgba(0,0,0,0.07), 0 4px 8px rgba(0,0,0,0.05)', desc: 'Modals, floating', shadow: '0 10px 20px rgba(0,0,0,0.07), 0 4px 8px rgba(0,0,0,0.05)' },
-  { name: 'Level 4', token: '--shadow-lg', value: '0 20px 40px rgba(0,0,0,0.08), 0 8px 16px rgba(0,0,0,0.05)', desc: 'Overlays, commands', shadow: '0 20px 40px rgba(0,0,0,0.08), 0 8px 16px rgba(0,0,0,0.05)' },
+  { name: 'Level 0', token: '--shadow-none', value: shadow.none, desc: 'Flat, inline elements', shadow: shadow.none },
+  { name: 'Level 1', token: '--shadow-xs', value: shadow.xs, desc: 'Inputs, chips', shadow: shadow.xs },
+  { name: 'Level 2', token: '--shadow-sm', value: shadow.sm, desc: 'Cards, panels', shadow: shadow.sm },
+  { name: 'Level 3', token: '--shadow-md', value: shadow.md, desc: 'Modals, floating', shadow: shadow.md },
+  { name: 'Level 4', token: '--shadow-lg', value: shadow.lg, desc: 'Overlays, commands', shadow: shadow.lg },
 ]
 
-// ─── Motion Data ──────────────────────────────────────────────────────────────
-
 const DURATION_TOKENS = [
-  { name: '--duration-instant', value: '100ms', desc: 'Micro-interactions, icon swaps, toggle snaps' },
-  { name: '--duration-fast', value: '200ms', desc: 'Hover states, badge changes, focus rings' },
-  { name: '--duration-normal', value: '300ms', desc: 'Panel slides, card reveals, dropdowns' },
-  { name: '--duration-slow', value: '500ms', desc: 'Page transitions, loader progress' },
-  { name: '--duration-slower', value: '700ms', desc: 'Onboarding, celebration feedback' },
+  { name: '--duration-instant', value: duration.instant, desc: 'Micro-interactions, icon swaps, toggle snaps' },
+  { name: '--duration-fast', value: duration.fast, desc: 'Hover states, badge changes, focus rings' },
+  { name: '--duration-normal', value: duration.normal, desc: 'Panel slides, card reveals, dropdowns' },
+  { name: '--duration-slow', value: duration.slow, desc: 'Page transitions, loader progress' },
+  { name: '--duration-slower', value: duration.slower, desc: 'Onboarding, celebration feedback' },
 ]
 
 const EASING_TOKENS = [
-  { name: '--ease-out', value: 'cubic-bezier(0, 0, 0.2, 1)', desc: 'Elements entering the screen' },
-  { name: '--ease-in', value: 'cubic-bezier(0.4, 0, 1, 1)', desc: 'Elements leaving the screen' },
-  { name: '--ease-in-out', value: 'cubic-bezier(0.4, 0, 0.2, 1)', desc: 'Persistent, cycling transitions' },
-  { name: '--ease-spring', value: 'cubic-bezier(0.34, 1.56, 0.64, 1)', desc: 'Playful, confirmation feedback' },
+  { name: '--ease-out', value: ease.out, desc: 'Elements entering the screen' },
+  { name: '--ease-in', value: ease.in, desc: 'Elements leaving the screen' },
+  { name: '--ease-in-out', value: ease.inOut, desc: 'Persistent, cycling transitions' },
+  { name: '--ease-spring', value: ease.spring, desc: 'Playful, confirmation feedback' },
 ]
 
-// ─── Token Data ───────────────────────────────────────────────────────────────
+// ─── Token Data (documentation surface) ───────────────────────────────────────
 
 const PRIMITIVE_TOKENS = [
-  { name: '--color-nova-50', value: '#F0FDF4', type: 'Color' },
-  { name: '--color-nova-100', value: '#DCFCE7', type: 'Color' },
-  { name: '--color-nova-200', value: '#BBF7D0', type: 'Color' },
-  { name: '--color-nova-300', value: '#86EFAC', type: 'Color' },
-  { name: '--color-nova-400', value: '#4ADE80', type: 'Color' },
-  { name: '--color-nova-500', value: '#22C55E', type: 'Color' },
-  { name: '--color-nova-600', value: '#16A34A', type: 'Color' },
-  { name: '--color-nova-700', value: '#15803D', type: 'Color' },
-  { name: '--color-nova-800', value: '#166534', type: 'Color' },
-  { name: '--color-nova-900', value: '#14532D', type: 'Color' },
-  { name: '--color-neutral-50', value: '#FAFAFA', type: 'Color' },
-  { name: '--color-neutral-100', value: '#F5F5F5', type: 'Color' },
-  { name: '--color-neutral-200', value: '#E5E5E5', type: 'Color' },
-  { name: '--color-neutral-300', value: '#D4D4D4', type: 'Color' },
-  { name: '--color-neutral-400', value: '#A3A3A3', type: 'Color' },
-  { name: '--color-neutral-500', value: '#737373', type: 'Color' },
-  { name: '--color-neutral-700', value: '#404040', type: 'Color' },
-  { name: '--color-neutral-900', value: '#171717', type: 'Color' },
-  { name: '--color-neutral-950', value: '#0A0A0A', type: 'Color' },
-  { name: '--space-0', value: '0px', type: 'Spacing' },
-  { name: '--space-0.5', value: '2px', type: 'Spacing' },
-  { name: '--space-1', value: '4px', type: 'Spacing' },
-  { name: '--space-2', value: '8px', type: 'Spacing' },
-  { name: '--space-4', value: '16px', type: 'Spacing' },
-  { name: '--space-6', value: '24px', type: 'Spacing' },
-  { name: '--space-8', value: '32px', type: 'Spacing' },
-  { name: '--space-12', value: '48px', type: 'Spacing' },
-  { name: '--space-16', value: '64px', type: 'Spacing' },
-  { name: '--radius-sm', value: '4px', type: 'Radius' },
-  { name: '--radius-md', value: '8px', type: 'Radius' },
-  { name: '--radius-lg', value: '12px', type: 'Radius' },
-  { name: '--radius-full', value: '9999px', type: 'Radius' },
+  { name: '--color-nova-50', value: nova[50], type: 'Color' },
+  { name: '--color-nova-100', value: nova[100], type: 'Color' },
+  { name: '--color-nova-200', value: nova[200], type: 'Color' },
+  { name: '--color-nova-300', value: nova[300], type: 'Color' },
+  { name: '--color-nova-400', value: nova[400], type: 'Color' },
+  { name: '--color-nova-500', value: nova[500], type: 'Color' },
+  { name: '--color-nova-600', value: nova[600], type: 'Color' },
+  { name: '--color-nova-700', value: nova[700], type: 'Color' },
+  { name: '--color-nova-800', value: nova[800], type: 'Color' },
+  { name: '--color-nova-900', value: nova[900], type: 'Color' },
+  { name: '--color-neutral-50', value: neutral[50], type: 'Color' },
+  { name: '--color-neutral-100', value: neutral[100], type: 'Color' },
+  { name: '--color-neutral-200', value: neutral[200], type: 'Color' },
+  { name: '--color-neutral-300', value: neutral[300], type: 'Color' },
+  { name: '--color-neutral-400', value: neutral[400], type: 'Color' },
+  { name: '--color-neutral-500', value: neutral[500], type: 'Color' },
+  { name: '--color-neutral-700', value: neutral[700], type: 'Color' },
+  { name: '--color-neutral-900', value: neutral[900], type: 'Color' },
+  { name: '--color-neutral-950', value: neutral[950], type: 'Color' },
+  { name: '--space-0', value: spacing[0], type: 'Spacing' },
+  { name: '--space-0.5', value: spacing['0.5'], type: 'Spacing' },
+  { name: '--space-1', value: spacing[1], type: 'Spacing' },
+  { name: '--space-2', value: spacing[2], type: 'Spacing' },
+  { name: '--space-4', value: spacing[4], type: 'Spacing' },
+  { name: '--space-6', value: spacing[6], type: 'Spacing' },
+  { name: '--space-8', value: spacing[8], type: 'Spacing' },
+  { name: '--space-12', value: spacing[12], type: 'Spacing' },
+  { name: '--space-16', value: spacing[16], type: 'Spacing' },
+  { name: '--radius-sm', value: radius.sm, type: 'Radius' },
+  { name: '--radius-md', value: radius.md, type: 'Radius' },
+  { name: '--radius-lg', value: radius.lg, type: 'Radius' },
+  { name: '--radius-full', value: radius.full, type: 'Radius' },
   { name: '--font-size-display', value: '40px / 40px (100%)', type: 'Typography' },
   { name: '--font-size-h1', value: '32px / 32px (100%)', type: 'Typography' },
   { name: '--font-size-h2', value: '24px / 31px (130%)', type: 'Typography' },
@@ -244,82 +246,7 @@ const COMPONENT_TOKENS = [
   { name: '--avatar-size-xl', value: '56px', component: 'Avatar' },
 ]
 
-// ─── Button Styles (includes Black + White) ───────────────────────────────────
-
-const BTN_STYLES: Record<string, Record<string, CSSProperties>> = {
-  Primary: {
-    default: { backgroundColor: '#16A34A', color: '#FFF' },
-    hover: { backgroundColor: '#15803D', color: '#FFF' },
-    disabled: { backgroundColor: '#E5E5E5', color: '#A3A3A3' },
-  },
-  Secondary: {
-    default: { backgroundColor: '#F0FDF4', color: '#15803D', border: '1px solid #DCFCE7' },
-    hover: { backgroundColor: '#DCFCE7', color: '#15803D', border: '1px solid #BBF7D0' },
-    disabled: { backgroundColor: '#F5F5F5', color: '#D4D4D4', border: '1px solid #E5E5E5' },
-  },
-  Ghost: {
-    default: { backgroundColor: 'transparent', color: '#16A34A' },
-    hover: { backgroundColor: '#F0FDF4', color: '#16A34A' },
-    disabled: { backgroundColor: 'transparent', color: '#D4D4D4' },
-  },
-  Outline: {
-    default: { backgroundColor: 'transparent', color: '#171717', border: '1px solid #E5E5E5' },
-    hover: { backgroundColor: '#F5F5F5', color: '#171717', border: '1px solid #E5E5E5' },
-    disabled: { backgroundColor: 'transparent', color: '#D4D4D4', border: '1px solid #F5F5F5' },
-  },
-  Destructive: {
-    default: { backgroundColor: '#DC2626', color: '#FFF' },
-    hover: { backgroundColor: '#B91C1C', color: '#FFF' },
-    disabled: { backgroundColor: '#E5E5E5', color: '#A3A3A3' },
-  },
-  Black: {
-    default: { backgroundColor: '#0A0A0A', color: '#FFF' },
-    hover: { backgroundColor: '#262626', color: '#FFF' },
-    disabled: { backgroundColor: '#E5E5E5', color: '#A3A3A3' },
-  },
-  White: {
-    default: { backgroundColor: '#FFFFFF', color: '#171717', border: '1px solid #E5E5E5' },
-    hover: { backgroundColor: '#F5F5F5', color: '#171717', border: '1px solid #E5E5E5' },
-    disabled: { backgroundColor: '#FFFFFF', color: '#D4D4D4', border: '1px solid #F5F5F5' },
-  },
-}
-
-// ─── Icons ────────────────────────────────────────────────────────────────────
-
-const ICONS: { name: string; d: string[] }[] = [
-  { name: 'Wallet', d: ['M21 12V7H5a2 2 0 0 1 0-4h14v4', 'M3 5v14a2 2 0 0 0 2 2h16v-5', 'M18 14h.01'] },
-  { name: 'Credit Card', d: ['M2 5h20a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z', 'M1 10h22'] },
-  { name: 'Trending Up', d: ['M23 6l-9.5 9.5-5-5L1 18', 'M17 6h6v6'] },
-  { name: 'Trending Down', d: ['M23 18l-9.5-9.5-5 5L1 6', 'M17 18h6v-6'] },
-  { name: 'Dollar Sign', d: ['M12 1v22', 'M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6'] },
-  { name: 'Home', d: ['M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z', 'M9 22V12h6v10'] },
-  { name: 'Settings', d: ['M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z', 'M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z'] },
-  { name: 'Bell', d: ['M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9', 'M13.73 21a2 2 0 0 1-3.46 0'] },
-  { name: 'Search', d: ['M20.49 20.49L16 16', 'M10 3a7 7 0 1 0 0 14A7 7 0 0 0 10 3z'] },
-  { name: 'Check Circle', d: ['M22 11.08V12a10 10 0 1 1-5.93-9.14', 'M22 4 12 14.01l-3-3'] },
-  { name: 'X Circle', d: ['M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z', 'M15 9l-6 6M9 9l6 6'] },
-  { name: 'Alert Circle', d: ['M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z', 'M12 8v4', 'M12 16h.01'] },
-  { name: 'Clock', d: ['M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z', 'M12 6v6l4 2'] },
-  { name: 'Send', d: ['M22 2 11 13', 'M22 2 15 22 11 13 2 9l20-7z'] },
-  { name: 'Shield', d: ['M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z'] },
-  { name: 'User', d: ['M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2', 'M12 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8z'] },
-  { name: 'Lock', d: ['M19 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2z', 'M7 11V7a5 5 0 0 1 10 0v4'] },
-  { name: 'Arrow Up', d: ['M12 19V5', 'M5 12l7-7 7 7'] },
-  { name: 'Arrow Down', d: ['M12 5v14', 'M19 12l-7 7-7-7'] },
-  { name: 'Refresh', d: ['M23 4v6h-6', 'M1 20v-6h6', 'M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15'] },
-]
-
 // ─── Reusable Primitives ──────────────────────────────────────────────────────
-
-function Ico({ name, size = 18 }: { name: string; size?: number }) {
-  const icon = ICONS.find(i => i.name === name)
-  if (!icon) return null
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round">
-      {icon.d.map((path, i) => <path key={i} d={path} />)}
-    </svg>
-  )
-}
 
 function SectionHeader({ breadcrumb, title, desc }: { breadcrumb: string; title: string; desc: string }) {
   return (
@@ -335,12 +262,13 @@ function Label({ children }: { children: ReactNode }) {
   return <p className="text-[10px] font-bold text-neutral-500 uppercase tracking-[0.1em] mb-4">{children}</p>
 }
 
+/** Frame = Card component without extra padding, padding carried by className. */
 function Frame({ children, className = '', style }: { children: ReactNode; className?: string; style?: CSSProperties }) {
-  return <div className={`bg-white border border-neutral-200 rounded-lg ${className}`} style={style}>{children}</div>
-}
-
-function Skel({ className = '', style }: { className?: string; style?: CSSProperties }) {
-  return <div className={`bg-neutral-100 rounded-md animate-pulse ${className}`} style={style} />
+  return (
+    <Card padding="none" className={className} style={style}>
+      {children}
+    </Card>
+  )
 }
 
 // ─── Section: Overview ────────────────────────────────────────────────────────
@@ -348,7 +276,7 @@ function Skel({ className = '', style }: { className?: string; style?: CSSProper
 function OverviewSection() {
   return (
     <div>
-      <div className="rounded-2xl p-10 mb-6 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #16A34A 0%, #166534 100%)' }}>
+      <div className="rounded-2xl p-10 mb-6 relative overflow-hidden" style={{ background: gradients.hero }}>
         <div className="relative z-10">
           <div className="flex items-center gap-3 mb-7">
             <div className="w-10 h-10 rounded-lg bg-white/20 flex items-center justify-center">
@@ -359,7 +287,7 @@ function OverviewSection() {
               <p className="text-green-200 text-[11px] font-medium mt-0.5">Design System · v1.0</p>
             </div>
           </div>
-          <h1 className="text-white font-bold leading-none mb-3 max-w-md" style={{ fontSize: 40, lineHeight: '40px' }}>
+          <h1 className="text-white font-bold leading-none mb-3 max-w-md" style={{ fontSize: typeScale.display.fontSize, lineHeight: '40px' }}>
             Financial clarity,<br />engineered for trust.
           </h1>
           <p className="text-green-100 text-[15px] max-w-sm mb-6" style={{ lineHeight: '21px' }}>
@@ -393,11 +321,11 @@ function OverviewSection() {
       <div className="grid grid-cols-2 gap-4 mb-4">
         <Frame className="p-6">
           <Label>Balance Card Preview</Label>
-          <Frame className="p-5" style={{ boxShadow: '0 4px 8px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.08)' }}>
+          <Frame className="p-5" style={{ boxShadow: shadow.sm }}>
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-md bg-nova-50 flex items-center justify-center text-nova-600">
-                  <Ico name="Wallet" size={15} />
+                  <Icon name="wallet" size={15} />
                 </div>
                 <span className="text-sm font-medium text-neutral-800">Main Account</span>
               </div>
@@ -406,9 +334,7 @@ function OverviewSection() {
             <p className="text-xs text-neutral-500 mb-1">Available Balance</p>
             <p className="text-3xl font-bold text-neutral-950 mb-3">$24,580.00</p>
             <div className="flex items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-nova-50 text-nova-700 text-xs font-medium border border-nova-100">
-                <span className="w-1.5 h-1.5 rounded-full bg-nova-600" />Active
-              </span>
+              <Badge variant="success" dot>Active</Badge>
               <span className="text-xs text-neutral-500">+$1,240 this month</span>
             </div>
           </Frame>
@@ -417,27 +343,15 @@ function OverviewSection() {
         <Frame className="p-6">
           <Label>Badges & Buttons Preview</Label>
           <div className="flex flex-wrap gap-2 mb-4">
-            {[
-              { label: 'Completed', bg: '#F0FDF4', text: '#15803D', dot: '#16A34A', border: '#DCFCE7' },
-              { label: 'Pending', bg: '#FFFBEB', text: '#92400E', dot: '#F59E0B', border: '#FEF3C7' },
-              { label: 'Failed', bg: '#FEF2F2', text: '#B91C1C', dot: '#DC2626', border: '#FEE2E2' },
-              { label: 'Processing', bg: '#EFF6FF', text: '#1E40AF', dot: '#2563EB', border: '#DBEAFE' },
-            ].map(b => (
-              <span key={b.label} className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium" style={{ backgroundColor: b.bg, color: b.text, border: `1px solid ${b.border}` }}>
-                <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: b.dot }} />{b.label}
-              </span>
-            ))}
+            <Badge variant="success" dot>Completed</Badge>
+            <Badge variant="warning" dot>Pending</Badge>
+            <Badge variant="error" dot>Failed</Badge>
+            <Badge variant="info" dot>Processing</Badge>
           </div>
           <div className="flex flex-wrap gap-2">
-            <button className="inline-flex items-center gap-2 px-4 h-10 rounded-md bg-nova-600 text-white text-sm font-medium hover:bg-nova-700 transition-colors">
-              <Ico name="Send" size={14} />Send Money
-            </button>
-            <button className="inline-flex items-center gap-2 px-4 h-10 rounded-md border border-neutral-200 text-neutral-700 text-sm font-medium hover:bg-neutral-50 transition-colors">
-              Cancel
-            </button>
-            <button className="inline-flex items-center gap-2 px-4 h-10 rounded-md bg-neutral-950 text-white text-sm font-medium hover:bg-neutral-800 transition-colors">
-              Confirm
-            </button>
+            <Button variant="primary" icon="send">Send Money</Button>
+            <Button variant="outline">Cancel</Button>
+            <Button variant="black">Confirm</Button>
           </div>
         </Frame>
       </div>
@@ -576,13 +490,13 @@ function TypographySection() {
           <div className="grid grid-cols-2 gap-8">
             <div>
               <p className="text-[10px] font-semibold text-neutral-500 uppercase tracking-wider mb-3">≥ 32px · 100% line height</p>
-              <p className="font-bold text-neutral-950 mb-2" style={{ fontSize: 40, lineHeight: '40px' }}>$24,580.00</p>
-              <p className="font-bold text-neutral-950" style={{ fontSize: 32, lineHeight: '32px' }}>Account Balance</p>
+              <p className="font-bold text-neutral-950 mb-2" style={{ fontSize: typeScale.display.fontSize, lineHeight: '40px' }}>$24,580.00</p>
+              <p className="font-bold text-neutral-950" style={{ fontSize: typeScale.h1.fontSize, lineHeight: '32px' }}>Account Balance</p>
             </div>
             <div>
               <p className="text-[10px] font-semibold text-neutral-500 uppercase tracking-wider mb-3">{"< 32px · 130% line height"}</p>
-              <p className="font-semibold text-neutral-900 mb-2" style={{ fontSize: 24, lineHeight: '31px' }}>Transaction History</p>
-              <p className="text-neutral-700" style={{ fontSize: 16, lineHeight: '21px' }}>
+              <p className="font-semibold text-neutral-900 mb-2" style={{ fontSize: typeScale.h2.fontSize, lineHeight: '31px' }}>Transaction History</p>
+              <p className="text-neutral-700" style={{ fontSize: typeScale.bodyLg.fontSize, lineHeight: '21px' }}>
                 Your NOVA balance reflects all confirmed transactions.<br />
                 Transfers may take up to 3 business days to appear.
               </p>
@@ -673,11 +587,11 @@ function RadiusSection() {
             <p className="text-[10px] text-neutral-500">4px</p>
           </div>
           <div className="flex flex-col items-center gap-2">
-            <button className="inline-flex items-center gap-2 px-4 h-10 rounded-md bg-nova-600 text-white text-sm font-medium">Button · MD</button>
+            <Button size="md">Button · MD</Button>
             <p className="text-[10px] text-neutral-500">8px</p>
           </div>
           <div className="flex flex-col items-center gap-2">
-            <input className="h-10 px-3 rounded-md border border-neutral-200 text-sm text-neutral-700 outline-none w-32" defaultValue="Input · MD" readOnly />
+            <TextInput className="w-32" defaultValue="Input · MD" readOnly />
             <p className="text-[10px] text-neutral-500">8px</p>
           </div>
           <div className="flex flex-col items-center gap-2">
@@ -685,7 +599,7 @@ function RadiusSection() {
             <p className="text-[10px] text-neutral-500">12px</p>
           </div>
           <div className="flex flex-col items-center gap-2">
-            <span className="inline-flex items-center h-6 px-3 rounded-full bg-nova-50 text-nova-700 text-xs font-medium border border-nova-100">Badge · Full</span>
+            <Badge variant="success" className="bg-nova-50 border-nova-100">Badge · Full</Badge>
             <p className="text-[10px] text-neutral-500">9999px</p>
           </div>
         </Frame>
@@ -737,13 +651,13 @@ function ElevationSection() {
         <Label>Elevation in Context</Label>
         <div className="bg-neutral-100 rounded-lg p-8 grid grid-cols-3 gap-5">
           {[
-            { label: 'Input · Level 1', shadow: '0 1px 2px rgba(0,0,0,0.06)' },
-            { label: 'Card · Level 2', shadow: '0 4px 8px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.08)' },
-            { label: 'Modal · Level 3', shadow: '0 10px 20px rgba(0,0,0,0.07), 0 4px 8px rgba(0,0,0,0.05)' },
+            { label: 'Input · Level 1', shadow: shadow.xs },
+            { label: 'Card · Level 2', shadow: shadow.sm },
+            { label: 'Modal · Level 3', shadow: shadow.md },
           ].map(ex => (
             <div key={ex.label} className="bg-white rounded-lg p-5" style={{ boxShadow: ex.shadow }}>
               <div className="w-8 h-8 rounded-md bg-nova-50 flex items-center justify-center text-nova-600 mb-3">
-                <Ico name="Dollar Sign" size={16} />
+                <Icon name="dollar-sign" size={16} />
               </div>
               <p className="text-sm font-bold text-neutral-900 mb-1">$8,240.00</p>
               <p className="text-xs text-neutral-500">{ex.label}</p>
@@ -797,14 +711,14 @@ function MotionSection() {
 // ─── Section: Buttons ─────────────────────────────────────────────────────────
 
 function ButtonsSection() {
-  const variants = [
-    { variant: 'Primary', desc: 'Main call-to-action. Use once per view.', icon: 'Send' },
-    { variant: 'Secondary', desc: 'Supporting action alongside Primary.', icon: 'Arrow Up' },
-    { variant: 'Ghost', desc: 'Tertiary links and navigation.', icon: 'Search' },
-    { variant: 'Outline', desc: 'Neutral framing, cancel, back.', icon: 'Settings' },
-    { variant: 'Destructive', desc: 'Irreversible or dangerous actions.', icon: 'X Circle' },
-    { variant: 'Black', desc: 'High-contrast, dark brand surface.', icon: 'Arrow Up' },
-    { variant: 'White', desc: 'On dark/colored backgrounds, overlays.', icon: 'User' },
+  const variants: { variant: ButtonVariant; desc: string; icon: string }[] = [
+    { variant: 'primary', desc: 'Main call-to-action. Use once per view.', icon: 'send' },
+    { variant: 'secondary', desc: 'Supporting action alongside Primary.', icon: 'arrow-up' },
+    { variant: 'ghost', desc: 'Tertiary links and navigation.', icon: 'search' },
+    { variant: 'outline', desc: 'Neutral framing, cancel, back.', icon: 'settings' },
+    { variant: 'destructive', desc: 'Irreversible or dangerous actions.', icon: 'x-circle' },
+    { variant: 'black', desc: 'High-contrast, dark brand surface.', icon: 'arrow-up' },
+    { variant: 'white', desc: 'On dark/colored backgrounds, overlays.', icon: 'user' },
   ]
 
   return (
@@ -812,26 +726,18 @@ function ButtonsSection() {
       <SectionHeader breadcrumb="Components" title="Buttons" desc="Seven variants, three sizes, five interactive states. All use radius MD (8px), weight 500, and scale on the 8px grid." />
 
       <div className="mb-10">
-        <Label>Variants · Default · Hover · Disabled</Label>
+        <Label>Variants · Default · Loading · Disabled</Label>
         <Frame className="p-6 divide-y divide-neutral-100">
           {variants.map(row => (
             <div key={row.variant} className="flex items-center gap-5 py-5 first:pt-0 last:pb-0">
               <div className="w-36 shrink-0">
-                <p className="text-sm font-semibold text-neutral-700">{row.variant}</p>
+                <p className="text-sm font-semibold text-neutral-700 capitalize">{row.variant}</p>
                 <p className="text-xs text-neutral-500 mt-0.5" style={{ lineHeight: '18px' }}>{row.desc}</p>
               </div>
               <div className="flex gap-3 items-center flex-wrap">
-                {(['default', 'hover', 'disabled'] as const).map(state => (
-                  <button
-                    key={state}
-                    disabled={state === 'disabled'}
-                    className="inline-flex items-center gap-2 px-4 h-9 text-sm font-medium rounded-md"
-                    style={BTN_STYLES[row.variant][state]}
-                  >
-                    {state === 'default' && <Ico name={row.icon} size={14} />}
-                    {state === 'default' ? row.variant : state.charAt(0).toUpperCase() + state.slice(1)}
-                  </button>
-                ))}
+                <Button variant={row.variant} icon={row.icon}>{row.variant}</Button>
+                <Button variant={row.variant} loading>Processing</Button>
+                <Button variant={row.variant} disabled>Disabled</Button>
               </div>
             </div>
           ))}
@@ -841,18 +747,14 @@ function ButtonsSection() {
       <div className="mb-10">
         <Label>Black & White on Colored Surface</Label>
         <div className="grid grid-cols-2 gap-4">
-          <div className="rounded-lg p-6 flex items-center justify-center gap-3" style={{ background: 'linear-gradient(135deg, #16A34A 0%, #166534 100%)' }}>
-            <button className="inline-flex items-center gap-2 px-4 h-10 rounded-md bg-white text-neutral-900 text-sm font-medium">
-              <Ico name="Send" size={14} />Send Money
-            </button>
-            <button className="inline-flex items-center gap-2 px-4 h-10 rounded-md text-white text-sm font-medium border border-white/30">
+          <div className="rounded-lg p-6 flex items-center justify-center gap-3" style={{ background: gradients.hero }}>
+            <Button variant="white" icon="send">Send Money</Button>
+            <button className="inline-flex items-center gap-2 px-4 h-10 rounded-md text-white text-sm font-medium border border-white/30 hover:bg-white/10 transition-colors">
               Cancel
             </button>
           </div>
           <div className="rounded-lg p-6 flex items-center justify-center gap-3 bg-neutral-950">
-            <button className="inline-flex items-center gap-2 px-4 h-10 rounded-md bg-nova-600 text-white text-sm font-medium hover:bg-nova-500 transition-colors">
-              <Ico name="Wallet" size={14} />Add Funds
-            </button>
+            <Button variant="primary" icon="wallet">Add Funds</Button>
             <button className="inline-flex items-center gap-2 px-4 h-10 rounded-md border border-neutral-700 text-neutral-300 text-sm font-medium hover:bg-neutral-800 transition-colors">
               View History
             </button>
@@ -863,27 +765,18 @@ function ButtonsSection() {
       <div className="mb-10">
         <Label>Sizes</Label>
         <Frame className="p-6 flex items-end gap-4">
-          <button className="inline-flex items-center gap-1.5 px-3 h-8 rounded-md bg-nova-600 text-white text-xs font-medium hover:bg-nova-700 transition-colors">SM · 32px</button>
-          <button className="inline-flex items-center gap-2 px-4 h-10 rounded-md bg-nova-600 text-white text-sm font-medium hover:bg-nova-700 transition-colors">MD · 40px</button>
-          <button className="inline-flex items-center gap-2 px-5 h-12 rounded-md bg-nova-600 text-white text-[15px] font-medium hover:bg-nova-700 transition-colors">LG · 48px</button>
+          <Button size="sm" icon="send">SM · 32px</Button>
+          <Button size="md" icon="send">MD · 40px</Button>
+          <Button size="lg" icon="send">LG · 48px</Button>
         </Frame>
       </div>
 
       <div className="mb-4">
         <Label>Loading & State Feedback</Label>
         <Frame className="p-6 flex flex-wrap gap-3">
-          <button className="inline-flex items-center gap-2 px-4 h-9 text-sm font-medium rounded-md bg-nova-600 text-white">
-            <svg className="animate-spin" width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round">
-              <path d="M21 12a9 9 0 1 1-6.219-8.56" />
-            </svg>
-            Processing…
-          </button>
-          <button className="inline-flex items-center gap-2 px-4 h-9 text-sm font-medium rounded-md bg-nova-50 text-nova-700 border border-nova-100">
-            <Ico name="Check Circle" size={14} />Confirmed
-          </button>
-          <button className="inline-flex items-center gap-2 px-4 h-9 text-sm font-medium rounded-md bg-red-50 text-red-700 border border-red-100">
-            <Ico name="X Circle" size={14} />Failed
-          </button>
+          <Button icon="send" loading>Processing…</Button>
+          <Button variant="secondary" icon="check-circle">Confirmed</Button>
+          <Button variant="destructive" icon="x-circle">Failed</Button>
         </Frame>
       </div>
     </div>
@@ -902,20 +795,19 @@ function InputsSection() {
         <Frame className="p-6 grid grid-cols-2 gap-6">
           <div>
             <p className="text-xs font-medium text-neutral-500 mb-2">Default</p>
-            <input type="text" placeholder="Enter amount" className="w-full h-10 px-3 rounded-md border border-neutral-200 text-sm text-neutral-800 placeholder:text-neutral-400 outline-none" />
+            <TextInput placeholder="Enter amount" />
           </div>
           <div>
             <p className="text-xs font-medium text-nova-600 mb-2">Focus</p>
-            <input type="text" defaultValue="$1,200.00" readOnly className="w-full h-10 px-3 rounded-md text-sm text-neutral-800 outline-none" style={{ border: '1px solid #16A34A', boxShadow: '0 0 0 3px rgba(22,163,74,0.12)' }} />
+            <TextInput defaultValue="$1,200.00" readOnly autoFocus />
           </div>
           <div>
             <p className="text-xs font-medium text-red-600 mb-2">Error</p>
-            <input type="text" defaultValue="$50,000.00" readOnly className="w-full h-10 px-3 rounded-md text-sm text-neutral-800 outline-none" style={{ border: '1px solid #DC2626', boxShadow: '0 0 0 3px rgba(220,38,38,0.08)' }} />
-            <p className="text-xs text-red-600 mt-1.5">Exceeds daily limit of $25,000</p>
+            <TextInput defaultValue="$50,000.00" readOnly error="Exceeds daily limit of $25,000" />
           </div>
           <div>
             <p className="text-xs font-medium text-neutral-400 mb-2">Disabled</p>
-            <input type="text" defaultValue="N/A" disabled className="w-full h-10 px-3 rounded-md text-sm text-neutral-400 bg-neutral-50 border border-neutral-200 cursor-not-allowed" />
+            <TextInput defaultValue="N/A" disabled />
           </div>
         </Frame>
       </div>
@@ -930,34 +822,30 @@ function InputsSection() {
           <div>
             <p className="text-xs font-medium text-neutral-500 mb-2">Transfer · Input icon + Button icon · both h-10</p>
             <div className="flex items-center gap-2">
-              <div className="relative flex-1">
-                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-500 pointer-events-none"><Ico name="Dollar Sign" size={15} /></div>
-                <input type="text" placeholder="0.00" className="w-full h-10 pl-9 pr-3 rounded-md border border-neutral-200 text-sm text-neutral-800 placeholder:text-neutral-400 outline-none focus:border-nova-600 transition-colors" />
+              <div className="flex-1">
+                <TextInput icon="dollar-sign" placeholder="0.00" />
               </div>
-              <button className="h-10 px-4 rounded-md bg-nova-600 text-white text-sm font-medium flex items-center gap-2 shrink-0 hover:bg-nova-700 transition-colors">
-                <Ico name="Send" size={15} />Send
-              </button>
+              <Button icon="send">Send</Button>
             </div>
           </div>
 
           <div>
             <p className="text-xs font-medium text-neutral-500 mb-2">Search · Input icon + plain button · both h-10</p>
             <div className="flex items-center gap-2">
-              <div className="relative flex-1">
-                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-500 pointer-events-none"><Ico name="Search" size={15} /></div>
-                <input type="text" placeholder="Search transactions…" className="w-full h-10 pl-9 pr-3 rounded-md border border-neutral-200 text-sm text-neutral-800 placeholder:text-neutral-400 outline-none focus:border-nova-600 transition-colors" />
+              <div className="flex-1">
+                <TextInput icon="search" placeholder="Search transactions…" />
               </div>
-              <button className="h-10 px-4 rounded-md border border-neutral-200 text-neutral-700 text-sm font-medium hover:bg-neutral-50 transition-colors shrink-0">Search</button>
+              <Button variant="outline">Search</Button>
             </div>
           </div>
 
           <div>
             <p className="text-xs font-medium text-neutral-500 mb-2">Account add · plain input + button with icon · both h-10</p>
             <div className="flex items-center gap-2">
-              <input type="text" placeholder="Enter account number or email" className="flex-1 h-10 px-3 rounded-md border border-neutral-200 text-sm text-neutral-800 placeholder:text-neutral-400 outline-none focus:border-nova-600 transition-colors" />
-              <button className="h-10 px-4 rounded-md bg-neutral-950 text-white text-sm font-medium flex items-center gap-2 shrink-0 hover:bg-neutral-800 transition-colors">
-                <Ico name="User" size={15} />Add
-              </button>
+              <div className="flex-1">
+                <TextInput placeholder="Enter account number or email" />
+              </div>
+              <Button variant="black" icon="user">Add</Button>
             </div>
           </div>
         </Frame>
@@ -966,22 +854,8 @@ function InputsSection() {
       <div className="mb-10">
         <Label>Input with Label + Prefix</Label>
         <Frame className="p-6 grid grid-cols-2 gap-6">
-          <div>
-            <label className="block text-sm font-medium text-neutral-700 mb-1.5">Transfer Amount</label>
-            <div className="relative">
-              <div className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-500 pointer-events-none"><Ico name="Dollar Sign" size={15} /></div>
-              <input type="text" placeholder="0.00" className="w-full h-10 pl-9 pr-3 rounded-md border border-neutral-200 text-sm text-neutral-800 placeholder:text-neutral-400 outline-none focus:border-nova-600 transition-colors" />
-            </div>
-            <p className="text-xs text-neutral-500 mt-1.5">Available: $24,580.00</p>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-neutral-700 mb-1.5">Recipient</label>
-            <div className="relative">
-              <div className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-500 pointer-events-none"><Ico name="User" size={15} /></div>
-              <input type="text" placeholder="Account number or email" className="w-full h-10 pl-9 pr-3 rounded-md border border-neutral-200 text-sm text-neutral-800 placeholder:text-neutral-400 outline-none focus:border-nova-600 transition-colors" />
-            </div>
-            <p className="text-xs text-neutral-500 mt-1.5">NOVA accounts transfer instantly</p>
-          </div>
+          <TextInput label="Transfer Amount" icon="dollar-sign" placeholder="0.00" hint="Available: $24,580.00" />
+          <TextInput label="Recipient" icon="user" placeholder="Account number or email" hint="NOVA accounts transfer instantly" />
         </Frame>
       </div>
 
@@ -989,17 +863,11 @@ function InputsSection() {
         <Label>Select</Label>
         <Frame className="p-6">
           <div className="max-w-xs">
-            <label className="block text-sm font-medium text-neutral-700 mb-1.5">Transfer Type</label>
-            <div className="relative">
-              <select className="w-full h-10 px-3 pr-8 rounded-md border border-neutral-200 text-sm text-neutral-800 outline-none appearance-none bg-white focus:border-nova-600 transition-colors">
-                <option>Standard Transfer (1–3 days)</option>
-                <option>Instant Transfer (fee applies)</option>
-                <option>Scheduled Transfer</option>
-              </select>
-              <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-neutral-500">
-                <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6" /></svg>
-              </div>
-            </div>
+            <Select label="Transfer Type" defaultValue="Standard">
+              <option>Standard Transfer (1–3 days)</option>
+              <option>Instant Transfer (fee applies)</option>
+              <option>Scheduled Transfer</option>
+            </Select>
           </div>
         </Frame>
       </div>
@@ -1008,32 +876,14 @@ function InputsSection() {
         <Label>Checkbox & Toggle</Label>
         <Frame className="p-6 flex gap-12">
           <div className="space-y-3">
-            {[
-              { label: 'Save card for future use', checked: true, disabled: false },
-              { label: 'Enable two-factor auth', checked: false, disabled: false },
-              { label: 'Paper statements (unavailable)', checked: false, disabled: true },
-            ].map(cb => (
-              <div key={cb.label} className="flex items-center gap-3">
-                <div className={`w-4 h-4 rounded-sm border-2 flex items-center justify-center shrink-0 ${cb.checked ? 'border-nova-600 bg-nova-600' : cb.disabled ? 'border-neutral-200 bg-neutral-50' : 'border-neutral-300 bg-white'}`}>
-                  {cb.checked && <svg width={9} height={9} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>}
-                </div>
-                <span className={`text-sm ${cb.disabled ? 'text-neutral-400' : 'text-neutral-700'}`}>{cb.label}</span>
-              </div>
-            ))}
+            <Checkbox label="Save card for future use" defaultChecked />
+            <Checkbox label="Enable two-factor auth" />
+            <Checkbox label="Paper statements (unavailable)" disabled />
           </div>
           <div className="space-y-4">
-            {[
-              { label: 'Payment notifications', on: true },
-              { label: 'Marketing emails', on: false },
-              { label: 'Security alerts', on: true },
-            ].map(tg => (
-              <div key={tg.label} className="flex items-center gap-3">
-                <div className="w-10 h-6 rounded-full relative shrink-0" style={{ backgroundColor: tg.on ? '#16A34A' : '#E5E5E5' }}>
-                  <div className="w-4 h-4 rounded-full bg-white absolute top-1 transition-all" style={{ left: tg.on ? '22px' : '4px', boxShadow: '0 1px 3px rgba(0,0,0,0.15)' }} />
-                </div>
-                <span className="text-sm text-neutral-700">{tg.label}</span>
-              </div>
-            ))}
+            <Toggle label="Payment notifications" defaultChecked />
+            <Toggle label="Marketing emails" />
+            <Toggle label="Security alerts" defaultChecked />
           </div>
         </Frame>
       </div>
@@ -1051,98 +901,48 @@ function CardsSection() {
       <div className="mb-10">
         <Label>Metric Cards</Label>
         <div className="grid grid-cols-3 gap-4">
-          {[
-            { label: 'Total Balance', value: '$24,580.00', delta: '+$1,240', up: true, sub: 'vs last month', icon: 'Wallet' },
-            { label: 'Monthly Spend', value: '$3,421.00', delta: '-$340', up: false, sub: 'vs last month', icon: 'Arrow Up' },
-            { label: 'Savings Rate', value: '18.4%', delta: '+2.1%', up: true, sub: 'vs last month', icon: 'Trending Up' },
-          ].map(c => (
-            <Frame key={c.label} className="p-6">
-              <div className="flex items-start justify-between mb-4">
-                <div className="w-9 h-9 rounded-md bg-nova-50 flex items-center justify-center text-nova-600">
-                  <Ico name={c.icon} size={17} />
-                </div>
-                <span className="text-xs font-semibold px-2 py-1 rounded-full" style={c.up ? { backgroundColor: '#F0FDF4', color: '#15803D' } : { backgroundColor: '#FEF2F2', color: '#B91C1C' }}>
-                  {c.delta}
-                </span>
-              </div>
-              <p className="text-2xl font-bold text-neutral-950 mb-1">{c.value}</p>
-              <p className="text-sm text-neutral-500">{c.label}</p>
-              <p className="text-xs text-neutral-500 mt-0.5">{c.sub}</p>
-            </Frame>
-          ))}
+          <MetricCard icon="wallet" label="Total Balance" value="$24,580.00" delta="+$1,240" trend="up" sub="vs last month" />
+          <MetricCard icon="arrow-up" label="Monthly Spend" value="$3,421.00" delta="- $340" trend="down" sub="vs last month" />
+          <MetricCard icon="trending-up" label="Savings Rate" value="18.4%" delta="+2.1%" trend="up" sub="vs last month" />
         </div>
       </div>
 
       <div className="mb-10">
         <Label>Account Cards</Label>
         <div className="grid grid-cols-2 gap-4">
-          <Frame className="p-6">
-            <div className="flex items-center gap-3 mb-5">
-              <div className="w-10 h-10 rounded-full bg-nova-600 flex items-center justify-center text-white font-bold text-sm">JM</div>
-              <div>
-                <p className="text-sm font-semibold text-neutral-800">James Mitchell</p>
-                <p className="text-xs text-neutral-500">NOVA Premium · #8291</p>
-              </div>
-              <span className="ml-auto inline-flex items-center gap-1 px-2 py-1 rounded-full bg-nova-50 text-nova-700 text-xs font-medium border border-nova-100">
-                <span className="w-1.5 h-1.5 rounded-full bg-nova-600" />Active
-              </span>
-            </div>
-            <div className="space-y-2.5">
-              <div className="flex justify-between text-sm"><span className="text-neutral-500">Available Balance</span><span className="font-semibold text-neutral-900">$24,580.00</span></div>
-              <div className="flex justify-between text-sm"><span className="text-neutral-500">Pending</span><span className="font-medium text-neutral-700">$340.00</span></div>
-              <div className="border-t border-neutral-100 pt-2.5 flex justify-between text-sm"><span className="text-neutral-500">Total</span><span className="font-bold text-neutral-900">$24,920.00</span></div>
-            </div>
-          </Frame>
-
-          <div className="rounded-lg p-6 text-white" style={{ background: 'linear-gradient(135deg, #16A34A 0%, #166534 100%)' }}>
-            <div className="flex items-center justify-between mb-8">
-              <p className="text-green-100 text-sm font-medium">NOVA Premium</p>
-              <div className="text-white/60"><Ico name="Credit Card" size={20} /></div>
-            </div>
-            <p className="text-2xl font-bold mb-1">$24,580.00</p>
-            <p className="text-green-200 text-sm mb-8">Available balance</p>
-            <div className="flex justify-between items-end">
-              <div>
-                <p className="text-green-200 text-xs mb-0.5">Account holder</p>
-                <p className="text-white text-sm font-medium">James Mitchell</p>
-              </div>
-              <div className="text-right">
-                <p className="text-green-200 text-xs mb-0.5">Account No.</p>
-                <p className="text-white text-sm font-mono">•••• 8291</p>
-              </div>
-            </div>
-          </div>
+          <AccountCard
+            name="James Mitchell"
+            meta="NOVA Premium · #8291"
+            initials="JM"
+            status="Active"
+            rows={[
+              { label: 'Available Balance', value: '$24,580.00', emphasis: 'strong' },
+              { label: 'Pending', value: '$340.00', emphasis: 'normal' },
+              { label: 'Total', value: '$24,920.00', emphasis: 'bold', divider: true },
+            ]}
+          />
+          <GradientCard
+            brand="NOVA Premium"
+            amount="$24,580.00"
+            amountLabel="Available balance"
+            holder="James Mitchell"
+            accountNo="•••• 8291"
+          />
         </div>
       </div>
 
       <div className="mb-4">
         <Label>Transaction List Card</Label>
-        <Frame>
-          <div className="flex items-center justify-between px-6 py-4 border-b border-neutral-100">
-            <div>
-              <p className="text-sm font-semibold text-neutral-800">Recent Transactions</p>
-              <p className="text-xs text-neutral-500 mt-0.5">Aug 2026 · 24 transactions</p>
-            </div>
-            <button className="text-sm text-nova-600 font-medium hover:text-nova-700 transition-colors">View all</button>
-          </div>
-          {[
-            { name: 'Stripe Inc.', amount: '+$2,400.00', date: 'Aug 16, 09:41', cat: 'Income', up: true },
-            { name: 'AWS Services', amount: '-$340.00', date: 'Aug 16, 07:15', cat: 'Infrastructure', up: false },
-            { name: 'Figma Pro', amount: '-$45.00', date: 'Aug 15, 15:22', cat: 'Subscription', up: false },
-            { name: 'Transfer from Savings', amount: '+$5,000.00', date: 'Aug 14, 12:00', cat: 'Transfer', up: true },
-          ].map((tx, i) => (
-            <div key={i} className="flex items-center gap-4 px-6 py-3.5 border-b border-neutral-50 last:border-0 hover:bg-neutral-50 transition-colors">
-              <div className="w-9 h-9 rounded-md flex items-center justify-center shrink-0" style={{ backgroundColor: tx.up ? '#F0FDF4' : '#F5F5F5', color: tx.up ? '#16A34A' : '#737373' }}>
-                <Ico name={tx.up ? 'Arrow Down' : 'Arrow Up'} size={15} />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-neutral-800">{tx.name}</p>
-                <p className="text-xs text-neutral-500 mt-0.5">{tx.date} · {tx.cat}</p>
-              </div>
-              <p className={`text-sm font-semibold ${tx.up ? 'text-nova-600' : 'text-neutral-700'}`}>{tx.amount}</p>
-            </div>
-          ))}
-        </Frame>
+        <TransactionList
+          title="Recent Transactions"
+          meta="Aug 2026 · 24 transactions"
+          transactions={[
+            { name: 'Stripe Inc.', amount: '+$2,400.00', date: 'Aug 16, 09:41', category: 'Income', direction: 'in' },
+            { name: 'AWS Services', amount: '-$340.00', date: 'Aug 16, 07:15', category: 'Infrastructure', direction: 'out' },
+            { name: 'Figma Pro', amount: '-$45.00', date: 'Aug 15, 15:22', category: 'Subscription', direction: 'out' },
+            { name: 'Transfer from Savings', amount: '+$5,000.00', date: 'Aug 14, 12:00', category: 'Transfer', direction: 'in' },
+          ]}
+        />
       </div>
     </div>
   )
@@ -1151,6 +951,14 @@ function CardsSection() {
 // ─── Section: Badges & Avatars ────────────────────────────────────────────────
 
 function BadgesSection() {
+  const badgeGroups: { variant: BadgeVariant; label: string; examples: string[] }[] = [
+    { variant: 'success', label: 'Success', examples: ['Completed', 'Verified', 'Active', 'Approved'] },
+    { variant: 'warning', label: 'Warning', examples: ['Pending', 'Reviewing', 'Awaiting', 'Expiring'] },
+    { variant: 'error', label: 'Error', examples: ['Failed', 'Declined', 'Blocked', 'Expired'] },
+    { variant: 'info', label: 'Info', examples: ['Processing', 'Scheduled', 'Draft', 'New'] },
+    { variant: 'neutral', label: 'Neutral', examples: ['Archived', 'Paused', 'Inactive', 'Closed'] },
+  ]
+
   return (
     <div>
       <SectionHeader breadcrumb="Components" title="Badges & Avatars" desc="Badges communicate status at a glance. Avatars represent users with consistent sizing from XS (24px) to XL (56px)." />
@@ -1158,20 +966,12 @@ function BadgesSection() {
       <div className="mb-10">
         <Label>Status Badges</Label>
         <Frame className="p-6 space-y-4">
-          {[
-            { group: 'Success', bg: '#F0FDF4', text: '#15803D', border: '#DCFCE7', dot: '#16A34A', examples: ['Completed', 'Verified', 'Active', 'Approved'] },
-            { group: 'Warning', bg: '#FFFBEB', text: '#92400E', border: '#FEF3C7', dot: '#F59E0B', examples: ['Pending', 'Reviewing', 'Awaiting', 'Expiring'] },
-            { group: 'Error', bg: '#FEF2F2', text: '#B91C1C', border: '#FEE2E2', dot: '#DC2626', examples: ['Failed', 'Declined', 'Blocked', 'Expired'] },
-            { group: 'Info', bg: '#EFF6FF', text: '#1E40AF', border: '#DBEAFE', dot: '#2563EB', examples: ['Processing', 'Scheduled', 'Draft', 'New'] },
-            { group: 'Neutral', bg: '#F5F5F5', text: '#525252', border: '#E5E5E5', dot: '#A3A3A3', examples: ['Archived', 'Paused', 'Inactive', 'Closed'] },
-          ].map(g => (
-            <div key={g.group} className="flex items-center gap-5">
-              <p className="w-20 text-xs font-semibold text-neutral-500 shrink-0">{g.group}</p>
+          {badgeGroups.map(g => (
+            <div key={g.label} className="flex items-center gap-5">
+              <p className="w-20 text-xs font-semibold text-neutral-500 shrink-0">{g.label}</p>
               <div className="flex gap-2 flex-wrap">
                 {g.examples.map(ex => (
-                  <span key={ex} className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium" style={{ backgroundColor: g.bg, color: g.text, border: `1px solid ${g.border}` }}>
-                    <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: g.dot }} />{ex}
-                  </span>
+                  <Badge key={ex} variant={g.variant} dot>{ex}</Badge>
                 ))}
               </div>
             </div>
@@ -1182,11 +982,13 @@ function BadgesSection() {
       <div className="mb-10">
         <Label>Avatar Sizes</Label>
         <Frame className="p-6 flex items-end gap-6">
-          {[{ s: 24, l: 'XS' }, { s: 32, l: 'SM' }, { s: 40, l: 'MD' }, { s: 48, l: 'LG' }, { s: 56, l: 'XL' }].map(av => (
-            <div key={av.l} className="flex flex-col items-center gap-2">
-              <div className="rounded-full bg-nova-600 flex items-center justify-center text-white font-semibold" style={{ width: av.s, height: av.s, fontSize: av.s * 0.34 }}>JM</div>
-              <p className="text-xs font-semibold text-neutral-600">{av.l}</p>
-              <p className="text-[10px] text-neutral-500 font-mono">{av.s}px</p>
+          {[{ size: 'xs' as const, label: 'XS' }, { size: 'sm' as const, label: 'SM' }, { size: 'md' as const, label: 'MD' }, { size: 'lg' as const, label: 'LG' }, { size: 'xl' as const, label: 'XL' }].map(av => (
+            <div key={av.label} className="flex flex-col items-center gap-2">
+              <Avatar label="JM" size={av.size} />
+              <p className="text-xs font-semibold text-neutral-600">{av.label}</p>
+              <p className="text-[10px] text-neutral-500 font-mono">
+                {av.size === 'xs' ? '24' : av.size === 'sm' ? '32' : av.size === 'md' ? '40' : av.size === 'lg' ? '48' : '56'}px
+              </p>
             </div>
           ))}
         </Frame>
@@ -1197,28 +999,33 @@ function BadgesSection() {
         <Frame className="p-6 flex gap-12 flex-wrap">
           <div>
             <p className="text-xs text-neutral-500 mb-3">Stacked Group</p>
-            <div className="flex">
-              {['JM', 'AK', 'SR', 'MP'].map((init, i) => (
-                <div key={init} className="rounded-full flex items-center justify-center text-white font-semibold text-xs border-2 border-white" style={{ width: 36, height: 36, backgroundColor: ['#16A34A', '#2563EB', '#F59E0B', '#DC2626'][i], marginLeft: i === 0 ? 0 : -10, zIndex: 4 - i, position: 'relative' }}>
-                  {init}
-                </div>
-              ))}
-              <div className="rounded-full flex items-center justify-center bg-neutral-100 text-neutral-600 font-semibold text-xs border-2 border-white" style={{ width: 36, height: 36, marginLeft: -10, position: 'relative', zIndex: 0 }}>+8</div>
-            </div>
+            <AvatarGroup
+              size="md"
+              items={[
+                { label: 'JM', color: nova[600] },
+                { label: 'AK', color: '#2563EB' },
+                { label: 'SR', color: '#F59E0B' },
+                { label: 'MP', color: '#DC2626' },
+              ]}
+              more={8}
+            />
           </div>
 
           <div>
             <p className="text-xs text-neutral-500 mb-3">With Status</p>
             <div className="flex gap-4">
-              {[{ dot: '#22C55E', lbl: 'Online' }, { dot: '#F59E0B', lbl: 'Away' }, { dot: '#E5E5E5', lbl: 'Offline' }].map(s => (
-                <div key={s.lbl} className="flex flex-col items-center gap-1.5">
-                  <div className="relative">
-                    <div className="w-10 h-10 rounded-full bg-nova-600 flex items-center justify-center text-white font-semibold text-sm">JM</div>
-                    <div className="absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 border-white" style={{ backgroundColor: s.dot }} />
-                  </div>
-                  <p className="text-xs text-neutral-500">{s.lbl}</p>
-                </div>
-              ))}
+              <div className="flex flex-col items-center gap-1.5">
+                <Avatar label="JM" status="online" />
+                <p className="text-xs text-neutral-500">Online</p>
+              </div>
+              <div className="flex flex-col items-center gap-1.5">
+                <Avatar label="JM" status="away" />
+                <p className="text-xs text-neutral-500">Away</p>
+              </div>
+              <div className="flex flex-col items-center gap-1.5">
+                <Avatar label="JM" status="offline" />
+                <p className="text-xs text-neutral-500">Offline</p>
+              </div>
             </div>
           </div>
         </Frame>
@@ -1235,13 +1042,13 @@ function IconsSection() {
       <SectionHeader breadcrumb="Components" title="Iconography" desc="Lucide-style stroke icons at 1.75px width, 24×24 viewport. Sized contextually: 16px inline, 20px standard, 24px standalone." />
 
       <div className="mb-10">
-        <Label>Icon Library · {ICONS.length} icons</Label>
+        <Label>Icon Library · {Object.keys(ICON_PATHS).length} icons</Label>
         <Frame className="p-4">
           <div className="grid grid-cols-5 gap-1">
-            {ICONS.map(icon => (
-              <div key={icon.name} className="flex flex-col items-center gap-2 p-4 rounded-md hover:bg-nova-50 transition-colors group cursor-default">
-                <div className="text-neutral-600 group-hover:text-nova-600 transition-colors"><Ico name={icon.name} size={22} /></div>
-                <p className="text-xs text-neutral-500 text-center leading-tight">{icon.name}</p>
+            {Object.keys(ICON_PATHS).map(name => (
+              <div key={name} className="flex flex-col items-center gap-2 p-4 rounded-md hover:bg-nova-50 transition-colors group cursor-default">
+                <div className="text-neutral-600 group-hover:text-nova-600 transition-colors"><Icon name={name} size={22} /></div>
+                <p className="text-xs text-neutral-500 text-center leading-tight">{name}</p>
               </div>
             ))}
           </div>
@@ -1253,7 +1060,7 @@ function IconsSection() {
         <Frame className="p-6 flex items-end gap-8">
           {[{ s: 12, l: '12px', d: 'Badge' }, { s: 16, l: '16px', d: 'Button' }, { s: 20, l: '20px', d: 'Standard' }, { s: 24, l: '24px', d: 'Standalone' }, { s: 32, l: '32px', d: 'Feature' }, { s: 40, l: '40px', d: 'Display' }].map(sv => (
             <div key={sv.s} className="flex flex-col items-center gap-2">
-              <div className="text-nova-600"><Ico name="Wallet" size={sv.s} /></div>
+              <div className="text-nova-600"><Icon name="wallet" size={sv.s} /></div>
               <p className="text-xs font-semibold text-neutral-700">{sv.l}</p>
               <p className="text-xs text-neutral-500">{sv.d}</p>
             </div>
@@ -1274,58 +1081,45 @@ function StatesSection() {
       <div className="mb-10">
         <Label>Empty States</Label>
         <div className="grid grid-cols-2 gap-4">
-          {[
-            {
-              icon: 'Trending Up',
-              iconBg: '#F0FDF4',
-              iconColor: '#16A34A',
-              title: 'No transactions yet',
-              desc: 'Your transaction history will appear here once you make your first payment or transfer.',
-              cta: { label: 'Add Funds', style: { backgroundColor: '#16A34A', color: '#FFF' } as CSSProperties },
-              ctaIcon: 'Arrow Down',
-            },
-            {
-              icon: 'Search',
-              iconBg: '#F5F5F5',
-              iconColor: '#737373',
-              title: "No results found",
-              desc: 'We couldn\'t find anything matching your search. Try adjusting your filters or search terms.',
-              cta: { label: 'Clear filters', style: { backgroundColor: 'transparent', color: '#16A34A' } as CSSProperties },
-              ctaIcon: 'Refresh',
-            },
-            {
-              icon: 'Bell',
-              iconBg: '#EFF6FF',
-              iconColor: '#2563EB',
-              title: "You're all caught up",
-              desc: 'You have no new notifications. We\'ll alert you when something requires your attention.',
-              cta: null,
-              ctaIcon: '',
-            },
-            {
-              icon: 'Credit Card',
-              iconBg: '#F0FDF4',
-              iconColor: '#16A34A',
-              title: 'No accounts connected',
-              desc: 'Link a bank account or card to start sending, receiving, and managing your money with NOVA.',
-              cta: { label: 'Connect Bank', style: { backgroundColor: '#0A0A0A', color: '#FFF' } as CSSProperties },
-              ctaIcon: 'Arrow Up',
-            },
-          ].map((e, idx) => (
-            <Frame key={idx} className="p-8 flex flex-col items-center text-center">
-              <div className="w-14 h-14 rounded-lg flex items-center justify-center mb-4" style={{ backgroundColor: e.iconBg, color: e.iconColor }}>
-                <Ico name={e.icon} size={26} />
-              </div>
-              <p className="text-base font-semibold text-neutral-900 mb-2">{e.title}</p>
-              <p className="text-sm text-neutral-500 max-w-xs mb-5" style={{ lineHeight: '21px' }}>{e.desc}</p>
-              {e.cta && (
-                <button className="inline-flex items-center gap-2 px-4 h-9 rounded-md text-sm font-medium" style={e.cta.style}>
-                  {e.ctaIcon && <Ico name={e.ctaIcon} size={14} />}
-                  {e.cta.label}
-                </button>
-              )}
-            </Frame>
-          ))}
+          <Frame>
+            <EmptyState
+              icon="trending-up"
+              iconBackground={intentPalette.success.bg}
+              iconColor={intentPalette.success.dot}
+              title="No transactions yet"
+              description="Your transaction history will appear here once you make your first payment or transfer."
+              action={{ label: 'Add Funds', icon: 'arrow-down' }}
+            />
+          </Frame>
+          <Frame>
+            <EmptyState
+              icon="search"
+              iconBackground={intentPalette.neutral.bg}
+              iconColor={intentPalette.neutral.dot}
+              title="No results found"
+              description="We couldn't find anything matching your search. Try adjusting your filters or search terms."
+              action={{ label: 'Clear filters', icon: 'refresh', variant: 'ghost' }}
+            />
+          </Frame>
+          <Frame>
+            <EmptyState
+              icon="bell"
+              iconBackground={intentPalette.info.bg}
+              iconColor={intentPalette.info.dot}
+              title="You're all caught up"
+              description="You have no new notifications. We'll alert you when something requires your attention."
+            />
+          </Frame>
+          <Frame>
+            <EmptyState
+              icon="credit-card"
+              iconBackground={intentPalette.success.bg}
+              iconColor={intentPalette.success.dot}
+              title="No accounts connected"
+              description="Link a bank account or card to start sending, receiving, and managing your money with NOVA."
+              action={{ label: 'Connect Bank', icon: 'arrow-up', variant: 'black' }}
+            />
+          </Frame>
         </div>
       </div>
 
@@ -1335,12 +1129,12 @@ function StatesSection() {
           <Frame className="p-6">
             <p className="text-xs font-medium text-neutral-500 mb-4">Metric card skeleton</p>
             <div className="flex items-start justify-between mb-4">
-              <Skel className="w-9 h-9 rounded-md" />
-              <Skel className="w-12 h-5 rounded-full" />
+              <Skeleton className="w-9 h-9 rounded-md" />
+              <Skeleton className="w-12 h-5 rounded-full" />
             </div>
-            <Skel className="w-32 h-7 rounded-md mb-2" />
-            <Skel className="w-24 h-4 rounded-md mb-1" />
-            <Skel className="w-20 h-3.5 rounded-md" />
+            <Skeleton className="w-32 h-7 rounded-md mb-2" />
+            <Skeleton className="w-24 h-4 rounded-md mb-1" />
+            <Skeleton className="w-20 h-3.5 rounded-md" />
           </Frame>
 
           <Frame className="p-6">
@@ -1348,12 +1142,12 @@ function StatesSection() {
             <div className="space-y-4">
               {[1, 2, 3].map(i => (
                 <div key={i} className="flex items-center gap-3">
-                  <Skel className="w-9 h-9 rounded-md shrink-0" />
+                  <Skeleton className="w-9 h-9 rounded-md shrink-0" />
                   <div className="flex-1 space-y-2">
-                    <Skel className="h-4 rounded-md" style={{ width: `${65 + i * 8}%` } as CSSProperties} />
-                    <Skel className="h-3 rounded-md w-1/3" />
+                    <Skeleton className="h-4 rounded-md" style={{ width: `${65 + i * 8}%` }} />
+                    <Skeleton className="h-3 rounded-md w-1/3" />
                   </div>
-                  <Skel className="w-16 h-4 rounded-md shrink-0" />
+                  <Skeleton className="w-16 h-4 rounded-md shrink-0" />
                 </div>
               ))}
             </div>
@@ -1362,18 +1156,18 @@ function StatesSection() {
           <Frame className="p-6">
             <p className="text-xs font-medium text-neutral-500 mb-4">Account card skeleton</p>
             <div className="flex items-center gap-3 mb-5">
-              <Skel className="w-10 h-10 rounded-full shrink-0" />
+              <Skeleton className="w-10 h-10 rounded-full shrink-0" />
               <div className="flex-1 space-y-2">
-                <Skel className="h-4 rounded-md w-2/3" />
-                <Skel className="h-3 rounded-md w-1/2" />
+                <Skeleton className="h-4 rounded-md w-2/3" />
+                <Skeleton className="h-3 rounded-md w-1/2" />
               </div>
-              <Skel className="w-16 h-5 rounded-full" />
+              <Skeleton className="w-16 h-5 rounded-full" />
             </div>
             <div className="space-y-3">
               {[1, 2, 3].map(i => (
                 <div key={i} className="flex justify-between">
-                  <Skel className="h-3.5 rounded-md w-1/3" />
-                  <Skel className="h-3.5 rounded-md w-1/4" />
+                  <Skeleton className="h-3.5 rounded-md w-1/3" />
+                  <Skeleton className="h-3.5 rounded-md w-1/4" />
                 </div>
               ))}
             </div>
@@ -1384,9 +1178,7 @@ function StatesSection() {
             <div className="flex items-center gap-6 mb-6">
               {[16, 24, 32, 40].map(sz => (
                 <div key={sz} className="flex flex-col items-center gap-2">
-                  <svg className="animate-spin text-nova-600" width={sz} height={sz} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round">
-                    <path d="M21 12a9 9 0 1 1-6.219-8.56" />
-                  </svg>
+                  <Spinner size={sz} className="text-nova-600" />
                   <p className="text-[10px] text-neutral-500">{sz}px</p>
                 </div>
               ))}
@@ -1394,7 +1186,7 @@ function StatesSection() {
             <div>
               <p className="text-xs text-neutral-500 mb-2">Progress bar</p>
               <div className="h-1.5 bg-neutral-100 rounded-full overflow-hidden">
-                <div className="h-full rounded-full animate-pulse" style={{ width: '65%', background: 'linear-gradient(90deg, #16A34A 0%, #22C55E 100%)' }} />
+                <div className="h-full rounded-full animate-pulse" style={{ width: '65%', background: gradients.accent }} />
               </div>
               <div className="flex justify-between mt-1">
                 <p className="text-[10px] text-neutral-500">Loading…</p>
@@ -1408,24 +1200,13 @@ function StatesSection() {
       <div className="mb-4">
         <Label>Inline Loading Patterns</Label>
         <Frame className="p-6 flex flex-wrap gap-4 items-center">
-          <button className="inline-flex items-center gap-2 px-4 h-10 rounded-md bg-nova-600 text-white text-sm font-medium">
-            <svg className="animate-spin" width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round">
-              <path d="M21 12a9 9 0 1 1-6.219-8.56" />
-            </svg>
-            Sending payment…
-          </button>
+          <Button loading>Sending payment…</Button>
           <div className="flex items-center gap-2">
-            <div className="relative">
-              <svg className="animate-spin text-nova-600" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round">
-                <path d="M21 12a9 9 0 1 1-6.219-8.56" />
-              </svg>
-            </div>
+            <Spinner size={16} className="text-nova-600" />
             <span className="text-sm text-neutral-500">Verifying account…</span>
           </div>
           <div className="flex items-center gap-2 px-4 py-2 rounded-md bg-nova-50 border border-nova-100">
-            <svg className="animate-spin text-nova-600" width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round">
-              <path d="M21 12a9 9 0 1 1-6.219-8.56" />
-            </svg>
+            <Spinner size={14} className="text-nova-600" />
             <span className="text-sm text-nova-700 font-medium">Processing transfer</span>
           </div>
         </Frame>
@@ -1475,7 +1256,7 @@ function TokensSection() {
 
       <div className="flex border border-neutral-200 rounded-md overflow-hidden mb-6 w-fit bg-white">
         {(['primitive', 'semantic', 'component'] as const).map(t => (
-          <button key={t} onClick={() => setTab(t)} className="px-5 py-2.5 text-sm font-medium capitalize transition-colors" style={tab === t ? { backgroundColor: '#16A34A', color: '#FFF' } : { backgroundColor: 'transparent', color: '#737373' }}>
+          <button key={t} onClick={() => setTab(t)} className="px-5 py-2.5 text-sm font-medium capitalize transition-colors" style={tab === t ? { backgroundColor: semantic.primary, color: '#FFF' } : { backgroundColor: 'transparent', color: '#737373' }}>
             {t}
           </button>
         ))}
@@ -1604,7 +1385,7 @@ export default function App() {
       <aside className="fixed left-0 top-0 h-screen w-[230px] bg-neutral-950 flex flex-col overflow-hidden shrink-0">
         <div className="px-5 py-5 border-b border-neutral-800/80">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-md flex items-center justify-center font-bold text-white text-[15px] shrink-0" style={{ background: 'linear-gradient(135deg, #16A34A 0%, #15803D 100%)' }}>
+            <div className="w-8 h-8 rounded-md flex items-center justify-center font-bold text-white text-[15px] shrink-0" style={{ background: gradients.hero }}>
               N
             </div>
             <div>

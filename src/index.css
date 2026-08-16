@@ -4,6 +4,7 @@
 @theme {
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
 
+  /* ─── Primitive · Green (Nova) scale ─────────────────────────────── */
   --color-nova-50: #F0FDF4;
   --color-nova-100: #DCFCE7;
   --color-nova-200: #BBF7D0;
@@ -15,6 +16,7 @@
   --color-nova-800: #166534;
   --color-nova-900: #14532D;
 
+  /* ─── Primitive · Neutral scale ──────────────────────────────────── */
   --color-neutral-50: #FAFAFA;
   --color-neutral-100: #F5F5F5;
   --color-neutral-200: #E5E5E5;
@@ -27,9 +29,126 @@
   --color-neutral-900: #171717;
   --color-neutral-950: #0A0A0A;
 
+  /* ─── Semantic · Intent colors ───────────────────────────────────── */
+  --color-success: #16A34A;
+  --color-warning: #F59E0B;
+  --color-error: #DC2626;
+  --color-info: #2563EB;
+
+  /* ─── Semantic · Role-based aliases ──────────────────────────────── */
+  --color-primary: var(--color-nova-600);
+  --color-primary-hover: var(--color-nova-700);
+  --color-primary-surface: var(--color-nova-50);
+  --color-primary-border: var(--color-nova-100);
+  --color-text: var(--color-neutral-950);
+  --color-text-secondary: var(--color-neutral-500);
+  --color-text-disabled: var(--color-neutral-400);
+  --color-surface: var(--color-neutral-50);
+  --color-surface-raised: #FFFFFF;
+  --color-surface-overlay: var(--color-neutral-100);
+  --color-border: var(--color-neutral-200);
+  --color-border-strong: var(--color-neutral-300);
+
+  /* ─── Radius scale ───────────────────────────────────────────────── */
   --radius-sm: 4px;
   --radius-md: 8px;
   --radius-lg: 12px;
+
+  /* ─── Elevation · shadow levels ──────────────────────────────────── */
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.06);
+  --shadow-sm: 0 4px 8px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.08);
+  --shadow-md: 0 10px 20px rgba(0,0,0,0.07), 0 4px 8px rgba(0,0,0,0.05);
+  --shadow-lg: 0 20px 40px rgba(0,0,0,0.08), 0 8px 16px rgba(0,0,0,0.05);
+
+  /* ─── Motion · easing curves ─────────────────────────────────────── */
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ─── Motion · duration scale ────────────────────────────────────── */
+  --duration-instant: 100ms;
+  --duration-fast: 200ms;
+  --duration-normal: 300ms;
+  --duration-slow: 500ms;
+  --duration-slower: 700ms;
+}
+
+/* ─── Full token surface (docs + component tiers) ──────────────────────── */
+:root {
+  /* Spacing · 8px grid
+     Note: steps 0.5 (2px) and 1.5 (6px) exist as JS tokens in
+     src/tokens/scale.ts; `.` is invalid in CSS custom-property names,
+     so they cannot be exposed as CSS variables. */
+  --space-0: 0px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+
+  /* Radius · full token (includes pill) */
+  --radius-full: 9999px;
+
+  /* Typography · size + line-height */
+  --font-size-display: 40px;
+  --font-size-h1: 32px;
+  --font-size-h2: 24px;
+  --font-size-h3: 20px;
+  --font-size-h4: 18px;
+  --font-size-body-lg: 16px;
+  --font-size-body-sm: 14px;
+  --font-size-caption: 12px;
+
+  --line-height-display: 40px;
+  --line-height-h1: 32px;
+  --line-height-h2: 31px;
+  --line-height-h3: 26px;
+  --line-height-h4: 23px;
+  --line-height-body-lg: 21px;
+  --line-height-body-sm: 18px;
+  --line-height-caption: 16px;
+
+  /* Gradients */
+  --gradient-hero: linear-gradient(135deg, #16A34A 0%, #166534 100%);
+  --gradient-surface: linear-gradient(180deg, #F0FDF4 0%, #FFFFFF 100%);
+  --gradient-card: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%);
+  --gradient-accent: linear-gradient(90deg, #16A34A 0%, #22C55E 100%);
+
+  /* Borders */
+  --border-default: 1px solid #E5E5E5;
+  --border-primary: 1px solid #DCFCE7;
+  --border-strong: 1px solid #D4D4D4;
+
+  /* Component tokens */
+  --button-height-sm: 32px;
+  --button-height-md: 40px;
+  --button-height-lg: 48px;
+  --button-radius: var(--radius-md);
+  --button-font-weight: 500;
+  --input-height-sm: 32px;
+  --input-height-md: 40px;
+  --input-height-lg: 48px;
+  --input-radius: var(--radius-md);
+  --input-focus-ring: 0 0 0 3px rgba(22,163,74,0.12);
+  --card-radius: var(--radius-lg);
+  --card-padding-sm: 16px;
+  --card-padding-md: 24px;
+  --badge-radius: var(--radius-full);
+  --badge-height: 20px;
+  --badge-font-size: 11px;
+  --avatar-size-xs: 24px;
+  --avatar-size-sm: 32px;
+  --avatar-size-md: 40px;
+  --avatar-size-lg: 48px;
+  --avatar-size-xl: 56px;
 }
 
 html {

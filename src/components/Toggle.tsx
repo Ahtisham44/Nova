@@ -1,0 +1,51 @@
+import { useState } from 'react'
+import type { ReactNode } from 'react'
+
+/**
+ * NOVA 2 · Toggle (switch).
+ * Full-radius pill, 40x24px. On = Nova Green track with white knob.
+ */
+
+export interface ToggleProps {
+  label?: ReactNode
+  checked?: boolean
+  defaultChecked?: boolean
+  disabled?: boolean
+  onChange?: (checked: boolean) => void
+}
+
+export default function Toggle({ label, checked, defaultChecked = false, disabled, onChange }: ToggleProps) {
+  const [internal, setInternal] = useState(defaultChecked)
+  const isOn = onChange ? Boolean(checked) : internal
+
+  const toggle = () => {
+    const next = !isOn
+    if (onChange) onChange(next)
+    else setInternal(next)
+  }
+
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={isOn}
+      aria-label={typeof label === 'string' ? label : undefined}
+      onClick={toggle}
+      disabled={disabled}
+      className={`inline-flex items-center gap-3 group ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+    >
+      <span
+        aria-hidden="true"
+        className={`w-10 h-6 rounded-full relative shrink-0 transition-colors ${
+          isOn ? 'bg-nova-600' : disabled ? 'bg-neutral-200' : 'bg-neutral-200 group-hover:bg-neutral-300'
+        }`}
+      >
+        <span
+          className="absolute top-1 w-4 h-4 rounded-full bg-white transition-all"
+          style={{ left: isOn ? '22px' : '4px', boxShadow: '0 1px 3px rgba(0,0,0,0.15)' }}
+        />
+      </span>
+      {label && <span className={`text-sm ${disabled ? 'text-neutral-400' : 'text-neutral-700'}`}>{label}</span>}
+    </button>
+  )
+}
