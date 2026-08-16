@@ -4,6 +4,16 @@ A comprehensive, systematic design foundation and React 19 component library eng
 
 ---
 
+## 📱 Mobile Flow made by NOVA
+
+**Mobile Flow made by NOVA** — an end-to-end, interactive Send Money journey (Loading → Home → Amount → Recipient → Review → Success) built entirely from NOVA tokens & components.
+
+- **Live demo:** [https://jolly-genie-0d17b6.netlify.app](https://jolly-genie-0d17b6.netlify.app)
+
+![Mobile Flow made by NOVA](screenshots/send-money-flow.jpg)
+
+---
+
 ## Tech Stack & Architecture
 
 - **Runtime & Framework:** React 19, TypeScript 5.7

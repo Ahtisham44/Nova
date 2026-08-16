@@ -16,3 +16,9 @@
 - **Component Exports:** Export components as default exports from their file and re-export via `src/components/index.ts`. Ensure JSX tags and braces are balanced.
 - **Strings:** Use double quotes for strings containing apostrophes or escape them properly.
 - **Formatting:** Run `pnpm format` (`oxfmt`) before final verification.
+
+## Send Money Flow (`src/SendMoneyFlow.tsx`)
+- **Purpose:** End-to-end mobile transfer demo (Loading → Home → Amount → Recipient → Review → Success), rebuilt entirely from NOVA components and tokens.
+- **Wiring:** Uses the component library (`@/components`) and token modules (`@/tokens`). Screen state is driven by `screen`/`stack`; navigation helpers `go()` and `back()` push/pop screens.
+- **Live demo:** https://jolly-genie-0d17b6.netlify.app (screenshot in `screenshots/send-money-flow.jpg`).
+- **Conventions:** Inline styles use JS tokens (`nova`, `neutral`, `semantic`, `gradients`, `shadow`, `ease`) rather than raw hex values; motion uses `ease.out` (320ms) for screen transitions; keep screens absolute-positioned within the phone frame.
