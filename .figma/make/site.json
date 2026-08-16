@@ -1,0 +1,10 @@
+{
+  "description": "NOVA is a modern fintech design system that provides a cohesive visual framework for developers and designers, enhancing user experience and brand consistency.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}

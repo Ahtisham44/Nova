@@ -1,0 +1,171 @@
+# NOVA 2 Fintech Design System - Token Studio Import & Specification
+
+This file contains the complete design token architecture for NOVA 2 Fintech Design System, structured for import into Figma's **Token Studio** (formerly Figma Tokens) plugin, as well as developer reference.
+
+## 1. Token Studio JSON Payload
+
+You can save this JSON payload as `tokens.json` or import it directly into Token Studio:
+
+```json
+{
+  "global": {
+    "color": {
+      "nova": {
+        "50": { "value": "#F0FDF4", "type": "color" },
+        "100": { "value": "#DCFCE7", "type": "color" },
+        "200": { "value": "#BBF7D0", "type": "color" },
+        "300": { "value": "#86EFAC", "type": "color" },
+        "400": { "value": "#4ADE80", "type": "color" },
+        "500": { "value": "#22C55E", "type": "color" },
+        "600": { "value": "#16A34A", "type": "color" },
+        "700": { "value": "#15803D", "type": "color" },
+        "800": { "value": "#166534", "type": "color" },
+        "900": { "value": "#14532D", "type": "color" }
+      },
+      "neutral": {
+        "50": { "value": "#FAFAFA", "type": "color" },
+        "100": { "value": "#F5F5F5", "type": "color" },
+        "200": { "value": "#E5E5E5", "type": "color" },
+        "300": { "value": "#D4D4D4", "type": "color" },
+        "400": { "value": "#A3A3A3", "type": "color" },
+        "500": { "value": "#737373", "type": "color" },
+        "600": { "value": "#525252", "type": "color" },
+        "700": { "value": "#404040", "type": "color" },
+        "800": { "value": "#262626", "type": "color" },
+        "900": { "value": "#171717", "type": "color" },
+        "950": { "value": "#0A0A0A", "type": "color" }
+      },
+      "semantic": {
+        "success": { "value": "#16A34A", "type": "color" },
+        "warning": { "value": "#F59E0B", "type": "color" },
+        "error": { "value": "#DC2626", "type": "color" },
+        "info": { "value": "#2563EB", "type": "color" }
+      }
+    },
+    "spacing": {
+      "0": { "value": "0px", "type": "spacing" },
+      "0.5": { "value": "2px", "type": "spacing" },
+      "1": { "value": "4px", "type": "spacing" },
+      "1.5": { "value": "6px", "type": "spacing" },
+      "2": { "value": "8px", "type": "spacing" },
+      "3": { "value": "12px", "type": "spacing" },
+      "4": { "value": "16px", "type": "spacing" },
+      "5": { "value": "20px", "type": "spacing" },
+      "6": { "value": "24px", "type": "spacing" },
+      "8": { "value": "32px", "type": "spacing" },
+      "10": { "value": "40px", "type": "spacing" },
+      "12": { "value": "48px", "type": "spacing" },
+      "16": { "value": "64px", "type": "spacing" },
+      "20": { "value": "80px", "type": "spacing" },
+      "24": { "value": "96px", "type": "spacing" }
+    },
+    "borderRadius": {
+      "sm": { "value": "4px", "type": "borderRadius" },
+      "md": { "value": "8px", "type": "borderRadius" },
+      "lg": { "value": "12px", "type": "borderRadius" },
+      "full": { "value": "9999px", "type": "borderRadius" }
+    },
+    "boxShadow": {
+      "none": { "value": "none", "type": "boxShadow" },
+      "xs": { "value": "0 1px 2px rgba(0,0,0,0.06)", "type": "boxShadow" },
+      "sm": { "value": "0 4px 8px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.08)", "type": "boxShadow" },
+      "md": { "value": "0 10px 20px rgba(0,0,0,0.07), 0 4px 8px rgba(0,0,0,0.05)", "type": "boxShadow" },
+      "lg": { "value": "0 20px 40px rgba(0,0,0,0.08), 0 8px 16px rgba(0,0,0,0.05)", "type": "boxShadow" }
+    },
+    "typography": {
+      "display": {
+        "value": {
+          "fontFamily": "Inter",
+          "fontWeight": "700",
+          "fontSize": "40px",
+          "lineHeight": "40px"
+        },
+        "type": "typography"
+      },
+      "h1": {
+        "value": {
+          "fontFamily": "Inter",
+          "fontWeight": "700",
+          "fontSize": "32px",
+          "lineHeight": "32px"
+        },
+        "type": "typography"
+      },
+      "h2": {
+        "value": {
+          "fontFamily": "Inter",
+          "fontWeight": "600",
+          "fontSize": "24px",
+          "lineHeight": "31px"
+        },
+        "type": "typography"
+      },
+      "h3": {
+        "value": {
+          "fontFamily": "Inter",
+          "fontWeight": "600",
+          "fontSize": "20px",
+          "lineHeight": "26px"
+        },
+        "type": "typography"
+      },
+      "h4": {
+        "value": {
+          "fontFamily": "Inter",
+          "fontWeight": "600",
+          "fontSize": "18px",
+          "lineHeight": "23px"
+        },
+        "type": "typography"
+      },
+      "bodyLg": {
+        "value": {
+          "fontFamily": "Inter",
+          "fontWeight": "400",
+          "fontSize": "16px",
+          "lineHeight": "21px"
+        },
+        "type": "typography"
+      },
+      "bodySm": {
+        "value": {
+          "fontFamily": "Inter",
+          "fontWeight": "400",
+          "fontSize": "14px",
+          "lineHeight": "18px"
+        },
+        "type": "typography"
+      },
+      "caption": {
+        "value": {
+          "fontFamily": "Inter",
+          "fontWeight": "400",
+          "fontSize": "12px",
+          "lineHeight": "16px"
+        },
+        "type": "typography"
+      }
+    }
+  },
+  "semantic": {
+    "color": {
+      "primary": { "value": "{global.color.nova.600}", "type": "color" },
+      "primaryHover": { "value": "{global.color.nova.700}", "type": "color" },
+      "surface": { "value": "{global.color.neutral.50}", "type": "color" },
+      "surfaceRaised": { "value": "#FFFFFF", "type": "color" },
+      "text": { "value": "{global.color.neutral.950}", "type": "color" },
+      "textSecondary": { "value": "{global.color.neutral.500}", "type": "color" },
+      "border": { "value": "{global.color.neutral.200}", "type": "color" }
+    }
+  }
+}
+```
+
+## 2. Token Architecture Summary
+
+- **Color System:** Nova green scale (`#16A34A` root), Neutral scale (`#FAFAFA` to `#0A0A0A`), Semantic intent colors.
+- **Typography:** Inter font family, 8 sizes (Display to Caption) with proportional line heights (100% for ≥32px, 130% for <32px).
+- **Spacing:** 8px base grid system (0px to 96px).
+- **Radius:** 4-step scale (4px, 8px, 12px, 9999px).
+- **Elevation:** 5-step shadow hierarchy (Levels 0–4).
+- **Borders:** Hairline and structural borders.
