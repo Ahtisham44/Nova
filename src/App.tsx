@@ -21,7 +21,7 @@ import {
   ICON_PATHS,
 } from '@/components'
 import type { ButtonVariant, BadgeVariant } from '@/components'
-import { nova, neutral, semantic, intentPalette, gradients, spacing, radius, shadow, typeScale, duration, ease } from '@/tokens'
+import { nova, neutral, semantic, intentPalette, gradients, spacing, radius, shadow, typeScale, duration, ease, fontSize, lineHeight, componentTokens } from '@/tokens'
 import { useTheme } from './providers/ThemeProvider'
 import SendMoneyFlow from './SendMoneyFlow'
 
@@ -97,10 +97,10 @@ const NEUTRAL_SCALE = [
 ]
 
 const SEMANTIC_COLORS = [
-  { name: 'Success', hex: semantic.success, bg: intentPalette.success.bg, border: intentPalette.success.border, textColor: intentPalette.success.text, desc: 'Positive outcomes and confirmed states' },
-  { name: 'Warning', hex: semantic.warning, bg: intentPalette.warning.bg, border: intentPalette.warning.border, textColor: intentPalette.warning.text, desc: 'Caution and pending states' },
-  { name: 'Error', hex: semantic.error, bg: intentPalette.error.bg, border: intentPalette.error.border, textColor: intentPalette.error.text, desc: 'Failures and destructive actions' },
-  { name: 'Info', hex: semantic.info, bg: intentPalette.info.bg, border: intentPalette.info.border, textColor: intentPalette.info.text, desc: 'Informational alerts and guidance' },
+  { name: 'Success', hex: semantic.success, bg: intentPalette.success.bg, border: intentPalette.success.border, textColor: intentPalette.success.text, dot: intentPalette.success.dot, desc: 'Positive outcomes and confirmed states' },
+  { name: 'Warning', hex: semantic.warning, bg: intentPalette.warning.bg, border: intentPalette.warning.border, textColor: intentPalette.warning.text, dot: intentPalette.warning.dot, desc: 'Caution and pending states' },
+  { name: 'Error', hex: semantic.error, bg: intentPalette.error.bg, border: intentPalette.error.border, textColor: intentPalette.error.text, dot: intentPalette.error.dot, desc: 'Failures and destructive actions' },
+  { name: 'Info', hex: semantic.info, bg: intentPalette.info.bg, border: intentPalette.info.border, textColor: intentPalette.info.text, dot: intentPalette.info.dot, desc: 'Informational alerts and guidance' },
 ]
 
 const GRADIENTS = [
@@ -162,94 +162,93 @@ const EASING_TOKENS = [
   { name: '--ease-spring', value: ease.spring, desc: 'Playful, confirmation feedback' },
 ]
 
-// ─── Token Data (documentation surface) ───────────────────────────────────────
+// ─── Token Data (sourced from tokens) ───────────────────────────────────────
+
+/** Convert a token key to a kebab-case CSS custom property segment. */
+const kebab = (s: string) =>
+  s.replace(/\./g, '-').replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase()
 
 const PRIMITIVE_TOKENS = [
-  { name: '--color-nova-50', value: nova[50], type: 'Color' },
-  { name: '--color-nova-100', value: nova[100], type: 'Color' },
-  { name: '--color-nova-200', value: nova[200], type: 'Color' },
-  { name: '--color-nova-300', value: nova[300], type: 'Color' },
-  { name: '--color-nova-400', value: nova[400], type: 'Color' },
-  { name: '--color-nova-500', value: nova[500], type: 'Color' },
-  { name: '--color-nova-600', value: nova[600], type: 'Color' },
-  { name: '--color-nova-700', value: nova[700], type: 'Color' },
-  { name: '--color-nova-800', value: nova[800], type: 'Color' },
-  { name: '--color-nova-900', value: nova[900], type: 'Color' },
-  { name: '--color-neutral-50', value: neutral[50], type: 'Color' },
-  { name: '--color-neutral-100', value: neutral[100], type: 'Color' },
-  { name: '--color-neutral-200', value: neutral[200], type: 'Color' },
-  { name: '--color-neutral-300', value: neutral[300], type: 'Color' },
-  { name: '--color-neutral-400', value: neutral[400], type: 'Color' },
-  { name: '--color-neutral-500', value: neutral[500], type: 'Color' },
-  { name: '--color-neutral-700', value: neutral[700], type: 'Color' },
-  { name: '--color-neutral-900', value: neutral[900], type: 'Color' },
-  { name: '--color-neutral-950', value: neutral[950], type: 'Color' },
-  { name: '--space-0', value: spacing[0], type: 'Spacing' },
-  { name: '--space-0.5', value: spacing['0.5'], type: 'Spacing' },
-  { name: '--space-1', value: spacing[1], type: 'Spacing' },
-  { name: '--space-2', value: spacing[2], type: 'Spacing' },
-  { name: '--space-4', value: spacing[4], type: 'Spacing' },
-  { name: '--space-6', value: spacing[6], type: 'Spacing' },
-  { name: '--space-8', value: spacing[8], type: 'Spacing' },
-  { name: '--space-12', value: spacing[12], type: 'Spacing' },
-  { name: '--space-16', value: spacing[16], type: 'Spacing' },
-  { name: '--radius-sm', value: radius.sm, type: 'Radius' },
-  { name: '--radius-md', value: radius.md, type: 'Radius' },
-  { name: '--radius-lg', value: radius.lg, type: 'Radius' },
-  { name: '--radius-full', value: radius.full, type: 'Radius' },
-  { name: '--font-size-display', value: '40px / 40px (100%)', type: 'Typography' },
-  { name: '--font-size-h1', value: '32px / 32px (100%)', type: 'Typography' },
-  { name: '--font-size-h2', value: '24px / 31px (130%)', type: 'Typography' },
-  { name: '--font-size-h3', value: '20px / 26px (130%)', type: 'Typography' },
-  { name: '--font-size-h4', value: '18px / 23px (130%)', type: 'Typography' },
-  { name: '--font-size-body-lg', value: '16px / 21px (130%)', type: 'Typography' },
-  { name: '--font-size-body-sm', value: '14px / 18px (130%)', type: 'Typography' },
-  { name: '--font-size-caption', value: '12px / 16px (130%)', type: 'Typography' },
+  ...Object.entries(nova).map(([step, value]) => ({ name: `--color-nova-${step}`, value, type: 'Color' })),
+  ...Object.entries(neutral).map(([step, value]) => ({ name: `--color-neutral-${step}`, value, type: 'Color' })),
+  ...Object.entries(spacing).map(([step, value]) => ({ name: `--space-${step}`, value, type: 'Spacing' })),
+  ...Object.entries(radius).map(([key, value]) => ({ name: `--radius-${key}`, value, type: 'Radius' })),
+  ...Object.entries(fontSize).map(([key, value]) => ({
+    name: `--font-size-${kebab(key)}`,
+    value: `${value}px / ${lineHeight[key as keyof typeof lineHeight]}px (${value >= 32 ? '100%' : '130%'})`,
+    type: 'Typography',
+  })),
 ]
 
-const SEMANTIC_TOKENS = [
-  { name: '--color-primary', value: 'var(--color-nova-600)', role: 'Primary brand action' },
-  { name: '--color-primary-hover', value: 'var(--color-nova-700)', role: 'Primary hover state' },
-  { name: '--color-primary-surface', value: 'var(--color-nova-50)', role: 'Light primary background' },
-  { name: '--color-primary-border', value: 'var(--color-nova-100)', role: 'Primary border and divider' },
-  { name: '--color-success', value: 'var(--color-nova-600)', role: 'Success indicator' },
-  { name: '--color-warning', value: '#F59E0B', role: 'Warning and caution state' },
-  { name: '--color-error', value: '#DC2626', role: 'Error and destructive state' },
-  { name: '--color-info', value: '#2563EB', role: 'Informational state' },
-  { name: '--color-text', value: 'var(--color-neutral-950)', role: 'Primary body text' },
-  { name: '--color-text-secondary', value: 'var(--color-neutral-500)', role: 'Labels, captions, metadata' },
-  { name: '--color-text-disabled', value: 'var(--color-neutral-400)', role: 'Disabled state text' },
-  { name: '--color-text-inverse', value: '#FFFFFF', role: 'Text on dark or primary surfaces' },
-  { name: '--color-surface', value: 'var(--color-neutral-50)', role: 'Page background' },
-  { name: '--color-surface-raised', value: '#FFFFFF', role: 'Card and panel background' },
-  { name: '--color-surface-overlay', value: 'var(--color-neutral-100)', role: 'Hover and interactive overlays' },
-  { name: '--color-border', value: 'var(--color-neutral-200)', role: 'Hairline borders and dividers' },
-  { name: '--color-border-strong', value: 'var(--color-neutral-300)', role: 'Emphasized borders' },
-  { name: '--color-focus-ring', value: 'var(--color-nova-600)', role: 'Keyboard focus indicator' },
-]
+const SEMANTIC_ROLES: Record<string, string> = {
+  primary: 'Primary brand action',
+  primaryHover: 'Primary hover state',
+  primaryActive: 'Primary pressed state',
+  primaryDisabled: 'Primary disabled state',
+  primarySurface: 'Light primary background',
+  primaryBorder: 'Primary border and divider',
+  success: 'Success indicator',
+  warning: 'Warning and caution state',
+  error: 'Error and destructive state',
+  info: 'Informational state',
+  text: 'Primary body text',
+  'text.hover': 'Body text hover state',
+  'text.muted': 'Labels, captions, metadata',
+  'text.disabled': 'Disabled state text',
+  'text.onPrimary': 'Text on dark or primary surfaces',
+  surface: 'Page background',
+  'surface.hover': 'Hover surface background',
+  'surface.active': 'Active surface background',
+  'surface.elevated': 'Card and panel background',
+  'surface.overlay': 'Hover and interactive overlays',
+  border: 'Hairline borders and dividers',
+  borderStrong: 'Emphasized borders',
+  borderFocus: 'Focused input border',
+  focusRing: 'Keyboard focus indicator',
+}
+
+const SEMANTIC_TOKENS = Object.entries(semantic).map(([key, value]) => ({
+  name: `--color-${kebab(key)}`,
+  value,
+  role: SEMANTIC_ROLES[key] ?? key,
+}))
 
 const COMPONENT_TOKENS = [
-  { name: '--button-height-sm', value: '32px', component: 'Button' },
-  { name: '--button-height-md', value: '40px', component: 'Button' },
-  { name: '--button-height-lg', value: '48px', component: 'Button' },
-  { name: '--button-radius', value: 'var(--radius-md) · 8px', component: 'Button' },
-  { name: '--button-font-weight', value: '500', component: 'Button' },
-  { name: '--input-height-sm', value: '32px', component: 'Input' },
-  { name: '--input-height-md', value: '40px', component: 'Input' },
-  { name: '--input-height-lg', value: '48px', component: 'Input' },
-  { name: '--input-radius', value: 'var(--radius-md) · 8px', component: 'Input' },
-  { name: '--input-focus-ring', value: '0 0 0 3px rgba(22,163,74,0.12)', component: 'Input' },
-  { name: '--card-radius', value: 'var(--radius-lg) · 12px', component: 'Card' },
-  { name: '--card-padding-sm', value: '16px', component: 'Card' },
-  { name: '--card-padding-md', value: '24px', component: 'Card' },
-  { name: '--badge-radius', value: 'var(--radius-full) · 9999px', component: 'Badge' },
-  { name: '--badge-height', value: '20px', component: 'Badge' },
-  { name: '--badge-font-size', value: '11px', component: 'Badge' },
-  { name: '--avatar-size-xs', value: '24px', component: 'Avatar' },
-  { name: '--avatar-size-sm', value: '32px', component: 'Avatar' },
-  { name: '--avatar-size-md', value: '40px', component: 'Avatar' },
-  { name: '--avatar-size-lg', value: '48px', component: 'Avatar' },
-  { name: '--avatar-size-xl', value: '56px', component: 'Avatar' },
+  // Button
+  { name: '--button-height-sm', value: componentTokens.button.height.sm, component: 'Button' },
+  { name: '--button-height-md', value: componentTokens.button.height.md, component: 'Button' },
+  { name: '--button-height-lg', value: componentTokens.button.height.lg, component: 'Button' },
+  { name: '--button-radius', value: componentTokens.button.radius, component: 'Button' },
+  { name: '--button-font-weight', value: String(componentTokens.button.fontWeight), component: 'Button' },
+  { name: '--button-primary', value: componentTokens.button.primary, component: 'Button' },
+  { name: '--button-primary-hover', value: componentTokens.button.primaryHover, component: 'Button' },
+  { name: '--button-primary-active', value: componentTokens.button.primaryActive, component: 'Button' },
+  { name: '--button-primary-disabled', value: componentTokens.button.primaryDisabled, component: 'Button' },
+
+  // Input
+  { name: '--input-height-sm', value: componentTokens.input.height.sm, component: 'Input' },
+  { name: '--input-height-md', value: componentTokens.input.height.md, component: 'Input' },
+  { name: '--input-height-lg', value: componentTokens.input.height.lg, component: 'Input' },
+  { name: '--input-radius', value: componentTokens.input.radius, component: 'Input' },
+  { name: '--input-focus-ring', value: componentTokens.input.focusRing, component: 'Input' },
+  { name: '--input-border-focus', value: componentTokens.input.borderFocus, component: 'Input' },
+
+  // Card
+  { name: '--card-radius', value: componentTokens.card.radius, component: 'Card' },
+  { name: '--card-padding-sm', value: componentTokens.card.padding.sm, component: 'Card' },
+  { name: '--card-padding-md', value: componentTokens.card.padding.md, component: 'Card' },
+
+  // Badge
+  { name: '--badge-radius', value: componentTokens.badge.radius, component: 'Badge' },
+  { name: '--badge-height', value: componentTokens.badge.height, component: 'Badge' },
+  { name: '--badge-font-size', value: `${componentTokens.badge.fontSize}px`, component: 'Badge' },
+
+  // Avatar
+  { name: '--avatar-size-xs', value: componentTokens.avatar.size.xs, component: 'Avatar' },
+  { name: '--avatar-size-sm', value: componentTokens.avatar.size.sm, component: 'Avatar' },
+  { name: '--avatar-size-md', value: componentTokens.avatar.size.md, component: 'Avatar' },
+  { name: '--avatar-size-lg', value: componentTokens.avatar.size.lg, component: 'Avatar' },
+  { name: '--avatar-size-xl', value: componentTokens.avatar.size.xl, component: 'Avatar' },
 ]
 
 // ─── Reusable Primitives ──────────────────────────────────────────────────────
@@ -353,9 +352,9 @@ function OverviewSection() {
           <Frame className="p-5" style={{ boxShadow: shadow.sm }}>
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-md bg-nova-50 flex items-center justify-center text-nova-600">
-                  <Icon name="wallet" size={15} />
-                </div>
+                <div className="w-8 h-8 rounded-md bg-primary-surface flex items-center justify-center text-nova-600">
+                <Icon name="wallet" size={15} />
+              </div>
                 <span className="text-sm font-medium text-neutral-800">Main Account</span>
               </div>
               <span className="text-xs text-neutral-500 font-mono">•••• 8291</span>
@@ -447,7 +446,7 @@ function ColorsSection() {
           {SEMANTIC_COLORS.map(c => (
             <div key={c.name + 'chip'} className="flex items-center gap-4">
               <div className="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium" style={{ backgroundColor: c.bg, color: c.textColor, border: `1px solid ${c.border}` }}>
-                <span className="w-2 h-2 rounded-full" style={{ backgroundColor: c.hex }} />
+                <span className="w-2 h-2 rounded-full" style={{ backgroundColor: c.dot }} />
                 {c.name}: {c.name === 'Success' ? 'Payment confirmed' : c.name === 'Warning' ? 'Verification required' : c.name === 'Error' ? 'Transaction declined' : 'Account under review'}
               </div>
               <span className="font-mono text-xs text-neutral-500">{c.hex}</span>
@@ -592,7 +591,7 @@ function RadiusSection() {
           {RADIUS_SCALE.map(r => (
             <Frame key={r.name} className="p-6 flex flex-col gap-4">
               <div
-                className="w-full aspect-square bg-nova-50 border-2 border-nova-200 max-w-[80px] mx-auto"
+                className="w-full aspect-square bg-primary-surface border-2 border-primary-border max-w-[80px] mx-auto"
                 style={{ borderRadius: Math.min(r.px, 80) }}
               />
               <div>
@@ -628,7 +627,7 @@ function RadiusSection() {
             <p className="text-[10px] text-neutral-500">12px</p>
           </div>
           <div className="flex flex-col items-center gap-2">
-            <Badge variant="success" className="bg-nova-50 border-nova-100">Badge · Full</Badge>
+            <Badge variant="success" className="bg-primary-surface border-primary-border">Badge · Full</Badge>
             <p className="text-[10px] text-neutral-500">9999px</p>
           </div>
         </Frame>
@@ -685,7 +684,7 @@ function ElevationSection() {
             { label: 'Modal · Level 3', shadow: shadow.md },
           ].map(ex => (
             <div key={ex.label} className="bg-surface-elevated rounded-lg p-5" style={{ boxShadow: ex.shadow }}>
-              <div className="w-8 h-8 rounded-md bg-nova-50 flex items-center justify-center text-nova-600 mb-3">
+              <div className="w-8 h-8 rounded-md bg-primary-surface flex items-center justify-center text-nova-600 mb-3">
                 <Icon name="dollar-sign" size={16} />
               </div>
               <p className="text-sm font-bold text-neutral-900 mb-1">$8,240.00</p>
@@ -1075,7 +1074,7 @@ function IconsSection() {
         <Frame className="p-4">
           <div className="grid grid-cols-5 gap-1">
             {Object.keys(ICON_PATHS).map(name => (
-              <div key={name} className="flex flex-col items-center gap-2 p-4 rounded-md hover:bg-nova-50 transition-colors group cursor-default">
+              <div key={name} className="flex flex-col items-center gap-2 p-4 rounded-md hover:bg-primary-surface transition-colors group cursor-default">
                 <div className="text-neutral-600 group-hover:text-nova-600 transition-colors"><Icon name={name} size={22} /></div>
                 <p className="text-xs text-neutral-500 text-center leading-tight">{name}</p>
               </div>
@@ -1234,7 +1233,7 @@ function StatesSection() {
             <Spinner size={16} className="text-nova-600" />
             <span className="text-sm text-neutral-500">Verifying account…</span>
           </div>
-          <div className="flex items-center gap-2 px-4 py-2 rounded-md bg-nova-50 border border-nova-100">
+          <div className="flex items-center gap-2 px-4 py-2 rounded-md bg-primary-surface border border-primary-border">
             <Spinner size={14} className="text-nova-600" />
             <span className="text-sm text-nova-700 font-medium">Processing transfer</span>
           </div>
@@ -1265,11 +1264,11 @@ function TokensSection() {
         <Frame className="p-5">
           <div className="flex items-stretch gap-2">
             {[
-              { tier: 'Primitive', desc: 'Raw design values', ex: '--color-nova-600: #16A34A', bg: '#F0FDF4', text: '#15803D', border: '#DCFCE7' },
+              { tier: 'Primitive', desc: 'Raw design values', ex: '--color-nova-600: #16A34A', bg: 'var(--ds-intent-success-bg)', text: 'var(--ds-intent-success-text)', border: 'var(--ds-intent-success-border)' },
               { tier: '→', desc: '', ex: '', bg: 'transparent', text: '#D4D4D4', border: 'transparent' },
-              { tier: 'Semantic', desc: 'Role-based aliases', ex: '--color-primary: var(--color-nova-600)', bg: '#EFF6FF', text: '#1E40AF', border: '#DBEAFE' },
+              { tier: 'Semantic', desc: 'Role-based aliases', ex: '--color-primary: var(--color-nova-600)', bg: 'var(--ds-intent-info-bg)', text: 'var(--ds-intent-info-text)', border: 'var(--ds-intent-info-border)' },
               { tier: '→', desc: '', ex: '', bg: 'transparent', text: '#D4D4D4', border: 'transparent' },
-              { tier: 'Component', desc: 'Usage-specific', ex: '--button-radius: var(--radius-md)', bg: '#FEF3C7', text: '#92400E', border: '#FDE68A' },
+              { tier: 'Component', desc: 'Usage-specific', ex: '--button-radius: var(--radius-md)', bg: 'var(--ds-intent-warning-bg)', text: 'var(--ds-intent-warning-text)', border: 'var(--ds-intent-warning-border)' },
             ].map((t, i) => (
               t.tier === '→'
                 ? <div key={i} className="flex items-center text-neutral-300 text-lg font-light shrink-0">→</div>

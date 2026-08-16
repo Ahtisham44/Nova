@@ -37,11 +37,11 @@ export default function Toggle({ label, checked, defaultChecked = false, disable
       <span
         aria-hidden="true"
         className={`w-10 h-6 rounded-full relative shrink-0 transition-colors ${
-          isOn ? 'bg-nova-600' : disabled ? 'bg-border-strong' : 'bg-border-strong group-hover:bg-text-muted'
+          isOn ? 'bg-nova-600' : disabled ? 'bg-border-strong dark:bg-neutral-200' : 'bg-border-strong group-hover:bg-text-muted'
         }`}
       >
         <span
-          className="absolute top-1 w-4 h-4 rounded-full bg-white transition-all"
+          className={`absolute top-1 w-4 h-4 rounded-full transition-all ${disabled ? 'bg-white dark:bg-neutral-400' : 'bg-white'}`}
           style={{ left: isOn ? '22px' : '4px', boxShadow: '0 1px 3px rgba(0,0,0,0.15)' }}
         />
       </span>

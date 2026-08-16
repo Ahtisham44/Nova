@@ -127,7 +127,7 @@ function DetailRow({ k, v, mono, green }: { k: string; v: string; mono?: boolean
       <span
         className="text-right font-medium"
         style={{
-          color: green ? nova[600] : 'var(--color-neutral-900)',
+          color: green ? 'var(--color-success)' : 'var(--color-neutral-900)',
           fontSize: mono ? 12 : 13,
           fontFamily: mono ? 'ui-monospace, monospace' : undefined,
         }}
@@ -192,7 +192,7 @@ function QuickTile({
       className="flex flex-col items-center gap-2 py-3.5 rounded-lg transition-all"
       style={{
         background: featured ? 'var(--gradient-card)' : 'transparent',
-        border: featured ? `1px solid ${nova[100]}` : '1px solid transparent',
+        border: featured ? '1px solid var(--color-primary-border)' : '1px solid transparent',
       }}
     >
       <div
@@ -453,7 +453,7 @@ export default function SendMoneyFlow() {
                     state === 'active'
                       ? { background: nova[600], color: '#fff', borderColor: nova[600] }
                       : state === 'done'
-                        ? { background: nova[50], color: nova[700], borderColor: nova[100] }
+                        ? { background: 'var(--color-primary-surface)', color: 'var(--color-primary)', borderColor: 'var(--color-primary-border)' }
                         : { background: 'var(--color-neutral-100)', color: 'var(--color-neutral-400)', borderColor: 'var(--color-neutral-200)' }
                   }
                 >
@@ -556,13 +556,13 @@ export default function SendMoneyFlow() {
                   onViewAll={() => toast('Full history — coming soon')}
                 />
 
-                <div className="mt-5 flex items-center gap-3 rounded-lg border px-4 py-4" style={{ background: 'var(--gradient-card)', borderColor: nova[100] }}>
+                <div className="mt-5 flex items-center gap-3 rounded-lg border px-4 py-4" style={{ background: 'var(--gradient-card)', borderColor: 'var(--color-primary-border)' }}>
                   <div className="w-[38px] h-[38px] rounded-md grid place-items-center flex-shrink-0 text-white" style={{ background: nova[600] }}>
                     <Icon name="shield" size={18} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-[13px] font-semibold" style={{ color: nova[800] }}>Bank-level security</p>
-                    <p className="text-[11px] mt-0.5" style={{ color: nova[700], opacity: 0.75 }}>
+                    <p className="text-[13px] font-semibold" style={{ color: 'var(--color-primary)' }}>Bank-level security</p>
+                    <p className="text-[11px] mt-0.5" style={{ color: 'var(--color-primary)', opacity: 0.75 }}>
                       Every transfer is encrypted &amp; FDIC insured up to $250,000.
                     </p>
                   </div>
@@ -708,7 +708,7 @@ export default function SendMoneyFlow() {
                     <Button variant="ghost" size="sm" className="!shrink-0" onClick={() => go('recipient')}>Change</Button>
                   </div>
                   <div className="flex items-center gap-3 px-5 py-3.5 border-t border-border">
-                    <div className="w-10 h-10 rounded-md grid place-items-center flex-shrink-0" style={{ background: nova[50], color: nova[600] }}>
+                    <div className="w-10 h-10 rounded-md grid place-items-center flex-shrink-0" style={{ background: 'var(--color-primary-surface)', color: 'var(--color-primary)' }}>
                       <Icon name="wallet" size={18} />
                     </div>
                     <div className="flex-1 min-w-0">
@@ -736,9 +736,9 @@ export default function SendMoneyFlow() {
                   </div>
                   <div className="flex justify-between items-center px-5 mt-1.5 text-[13px]" style={{ color: 'var(--color-neutral-500)' }}>
                     <span>NOVA fee</span>
-                    <span className="font-medium" style={{ color: nova[600] }}>Free</span>
+                    <span className="font-medium" style={{ color: 'var(--color-primary)' }}>Free</span>
                   </div>
-                  <div className="mt-3 rounded-lg border px-5 py-3.5" style={{ background: 'var(--gradient-card)', borderColor: nova[100] }}>
+                  <div className="mt-3 rounded-lg border px-5 py-3.5" style={{ background: 'var(--gradient-card)', borderColor: 'var(--color-primary-border)' }}>
                     <div className="flex justify-between items-center">
                       <span className="font-semibold" style={{ color: 'var(--color-neutral-900)' }}>Total</span>
                       <span className="text-[16px] font-bold" style={{ color: 'var(--color-neutral-950)' }}>{amt}</span>
@@ -747,7 +747,7 @@ export default function SendMoneyFlow() {
                 </div>
 
                 <div className="flex items-center justify-center gap-2 mt-4 text-[11px]" style={{ color: 'var(--color-neutral-400)' }}>
-                  <Icon name="lock" size={13} style={{ color: nova[600] }} />
+                  <Icon name="lock" size={13} style={{ color: 'var(--color-primary)' }} />
                   Bank-level security · 2FA enabled
                 </div>
               </div>
@@ -768,7 +768,7 @@ export default function SendMoneyFlow() {
                 <div className="text-center px-5 pt-7 pb-6" style={{ background: 'var(--gradient-surface)' }}>
                   <div
                     className="w-[92px] h-[92px] mx-auto mb-4 rounded-full border-2 grid place-items-center"
-                    style={{ background: nova[50], borderColor: nova[100], color: nova[600] }}
+                    style={{ background: 'var(--color-primary-surface)', borderColor: 'var(--color-primary-border)', color: 'var(--color-primary)' }}
                   >
                     <Icon name="check-circle" size={40} strokeWidth={2.25} style={{ animation: 'nova-pop 0.5s cubic-bezier(0.34,1.56,0.64,1) both' }} />
                   </div>

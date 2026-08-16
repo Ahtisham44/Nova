@@ -46,11 +46,11 @@ export type SemanticToken = keyof typeof semantic
 
 /** Intent colors for status surfaces (background / text / border / dot). */
 export const intentPalette = {
-  success: { bg: nova[50], text: nova[700], border: nova[100], dot: nova[600] },
-  warning: { bg: '#FFFBEB', text: '#92400E', border: '#FEF3C7', dot: '#F59E0B' },
-  error: { bg: '#FEF2F2', text: '#B91C1C', border: '#FEE2E2', dot: '#DC2626' },
-  info: { bg: '#EFF6FF', text: '#1E40AF', border: '#DBEAFE', dot: '#2563EB' },
-  neutral: { bg: neutral[100], text: neutral[600], border: neutral[200], dot: neutral[400] },
+  success: { bg: 'var(--ds-intent-success-bg)', text: 'var(--ds-intent-success-text)', border: 'var(--ds-intent-success-border)', dot: 'var(--ds-intent-success-dot)' },
+  warning: { bg: 'var(--ds-intent-warning-bg)', text: 'var(--ds-intent-warning-text)', border: 'var(--ds-intent-warning-border)', dot: 'var(--ds-intent-warning-dot)' },
+  error: { bg: 'var(--ds-intent-error-bg)', text: 'var(--ds-intent-error-text)', border: 'var(--ds-intent-error-border)', dot: 'var(--ds-intent-error-dot)' },
+  info: { bg: 'var(--ds-intent-info-bg)', text: 'var(--ds-intent-info-text)', border: 'var(--ds-intent-info-border)', dot: 'var(--ds-intent-info-dot)' },
+  neutral: { bg: 'var(--ds-intent-neutral-bg)', text: 'var(--ds-intent-neutral-text)', border: 'var(--ds-intent-neutral-border)', dot: 'var(--ds-intent-neutral-dot)' },
 } as const
 
 export const gradients = {
