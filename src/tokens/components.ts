@@ -1,4 +1,14 @@
-import { radius } from './scale'
+import { radius, spacing } from './scale'
+import { semantic } from './colors'
+import { typeScale, fontWeight } from './typography'
+
+/** Convert a hex color to an rgba() string at the given alpha. */
+const hexToRgba = (hex: string, alpha: number): string => {
+  const r = parseInt(hex.slice(1, 3), 16)
+  const g = parseInt(hex.slice(3, 5), 16)
+  const b = parseInt(hex.slice(5, 7), 16)
+  return `rgba(${r},${g},${b},${alpha})`
+}
 
 /**
  * NOVA 2 · Component-level tokens.
@@ -8,25 +18,36 @@ import { radius } from './scale'
 
 export const componentTokens = {
   button: {
-    height: { sm: '32px', md: '40px', lg: '48px' },
+    height: { sm: spacing[8], md: spacing[10], lg: spacing[12] },
     radius: radius.md,
-    fontWeight: 500,
+    fontWeight: fontWeight.medium,
+    primary: semantic.primary,
+    primaryHover: semantic.primaryHover,
+    primaryActive: semantic.primaryActive,
+    primaryDisabled: semantic.primaryDisabled,
   },
   input: {
-    height: { sm: '32px', md: '40px', lg: '48px' },
+    height: { sm: spacing[8], md: spacing[10], lg: spacing[12] },
     radius: radius.md,
-    focusRing: '0 0 0 3px rgba(22,163,74,0.12)',
+    focusRing: `0 0 0 3px ${hexToRgba(semantic.focusRing, 0.12)}`,
+    borderFocus: semantic.borderFocus,
   },
   card: {
     radius: radius.lg,
-    padding: { sm: '16px', md: '24px' },
+    padding: { sm: spacing[4], md: spacing[6] },
   },
   badge: {
     radius: radius.full,
-    height: '20px',
-    fontSize: '11px',
+    height: spacing[5],
+    fontSize: typeScale.caption.fontSize,
   },
   avatar: {
-    size: { xs: '24px', sm: '32px', md: '40px', lg: '48px', xl: '56px' },
+    size: {
+      xs: spacing[6],
+      sm: spacing[8],
+      md: spacing[10],
+      lg: spacing[12],
+      xl: spacing[14],
+    },
   },
 } as const

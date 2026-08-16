@@ -34,3 +34,46 @@ export const neutral = {
 } as const
 
 export type NeutralStep = keyof typeof neutral
+
+/** Base white used for inverse text and raised surfaces. */
+export const white = '#FFFFFF'
+
+/** Amber scale — warning intent (dark-friendly at the 400 step). */
+export const amber = {
+  400: '#FBBF24',
+  500: '#F59E0B',
+  600: '#D97706',
+  700: '#B45309',
+  800: '#92400E',
+} as const
+
+/** Red scale — error intent (dark-friendly at the 400 step). */
+export const red = {
+  100: '#FEF2F2',
+  200: '#FEE2E2',
+  300: '#FCA5A5',
+  400: '#F87171',
+  500: '#EF4444',
+  600: '#DC2626',
+  700: '#B91C1C',
+  800: '#991B1B',
+} as const
+
+/** Blue scale — info intent (dark-friendly at the 400 step). */
+export const blue = {
+  100: '#DBEAFE',
+  200: '#BFDBFE',
+  300: '#93C5FD',
+  400: '#60A5FA',
+  500: '#3B82F6',
+  600: '#2563EB',
+  700: '#1D4ED8',
+  800: '#1E40AF',
+} as const
+
+/** Status accent colors (outside the green nova scale). */
+export const status = {
+  warning: '#F59E0B',
+  error: '#DC2626',
+  info: '#2563EB',
+} as const

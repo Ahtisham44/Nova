@@ -29,7 +29,7 @@ export default function Checkbox({ label, checked, defaultChecked = false, disab
     <label className={`inline-flex items-center gap-3 ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'}`}>
       <input
         type="checkbox"
-        className="sr-only"
+        className="sr-only peer"
         checked={isChecked}
         disabled={disabled}
         onChange={toggle}
@@ -37,17 +37,17 @@ export default function Checkbox({ label, checked, defaultChecked = false, disab
       />
       <span
         aria-hidden="true"
-        className={`w-4 h-4 rounded-sm border-2 flex items-center justify-center shrink-0 transition-colors ${
+        className={`w-4 h-4 rounded-sm border-2 flex items-center justify-center shrink-0 transition-colors peer-focus-visible:ring-2 peer-focus-visible:ring-border-focus peer-focus-visible:ring-offset-2 ${
           isChecked
             ? 'border-nova-600 bg-nova-600'
             : disabled
-              ? 'border-neutral-200 bg-neutral-50'
-              : 'border-neutral-300 bg-white hover:border-neutral-400'
+              ? 'border-border bg-surface'
+              : 'border-border-strong bg-surface-elevated hover:border-text-muted'
         }`}
       >
         {isChecked && <Icon name="check" size={9} strokeWidth={3} className="text-white" />}
       </span>
-      {label && <span className={`text-sm ${disabled ? 'text-neutral-400' : 'text-neutral-700'}`}>{label}</span>}
+      {label && <span className={`text-sm ${disabled ? 'text-text-disabled' : 'text-text'}`}>{label}</span>}
     </label>
   )
 }

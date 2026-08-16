@@ -32,12 +32,12 @@ export default function Toggle({ label, checked, defaultChecked = false, disable
       aria-label={typeof label === 'string' ? label : undefined}
       onClick={toggle}
       disabled={disabled}
-      className={`inline-flex items-center gap-3 group ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+      className={`inline-flex items-center gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-focus focus-visible:ring-offset-2 focus-visible:ring-offset-surface ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'}`}
     >
       <span
         aria-hidden="true"
         className={`w-10 h-6 rounded-full relative shrink-0 transition-colors ${
-          isOn ? 'bg-nova-600' : disabled ? 'bg-neutral-200' : 'bg-neutral-200 group-hover:bg-neutral-300'
+          isOn ? 'bg-nova-600' : disabled ? 'bg-border-strong' : 'bg-border-strong group-hover:bg-text-muted'
         }`}
       >
         <span
@@ -45,7 +45,7 @@ export default function Toggle({ label, checked, defaultChecked = false, disable
           style={{ left: isOn ? '22px' : '4px', boxShadow: '0 1px 3px rgba(0,0,0,0.15)' }}
         />
       </span>
-      {label && <span className={`text-sm ${disabled ? 'text-neutral-400' : 'text-neutral-700'}`}>{label}</span>}
+      {label && <span className={`text-sm ${disabled ? 'text-text-disabled' : 'text-text'}`}>{label}</span>}
     </button>
   )
 }

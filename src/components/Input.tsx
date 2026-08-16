@@ -16,11 +16,11 @@ const INPUT_SIZES: Record<InputSize, string> = {
 }
 
 const INPUT_STATES = {
-  base: 'w-full rounded-md border px-3 text-neutral-800 placeholder:text-neutral-400 outline-none transition-colors bg-white',
-  border: 'border-neutral-200',
-  focus: 'focus:border-nova-600 focus:shadow-[0_0_0_3px_rgba(22,163,74,0.12)]',
+  base: 'w-full rounded-md border px-3 text-text placeholder:text-text-disabled outline-none transition-colors bg-surface-elevated',
+  border: 'border-border',
+  focus: 'focus:border-border-focus focus:shadow-[0_0_0_3px_rgba(22,163,74,0.12)]',
   error: 'border-error focus:border-error focus:shadow-[0_0_0_3px_rgba(220,38,38,0.08)]',
-  disabled: 'disabled:bg-neutral-50 disabled:text-neutral-400 disabled:cursor-not-allowed',
+  disabled: 'disabled:bg-surface disabled:text-text-disabled disabled:cursor-not-allowed',
 }
 
 export interface TextInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
@@ -49,13 +49,13 @@ export default function TextInput({
   return (
     <div className={className}>
       {label && (
-        <label htmlFor={inputId} className="block text-sm font-medium text-neutral-700 mb-1.5">
+        <label htmlFor={inputId} className="block text-sm font-medium text-text mb-1.5">
           {label}
         </label>
       )}
       <div className="relative">
         {icon && (
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-500 pointer-events-none">
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted pointer-events-none">
             <Icon name={icon} size={iconSize} />
           </span>
         )}
@@ -65,8 +65,8 @@ export default function TextInput({
           {...rest}
         />
       </div>
-      {error && <p className="text-xs text-red-600 mt-1.5">{error}</p>}
-      {!error && hint && <p className="text-xs text-neutral-500 mt-1.5">{hint}</p>}
+      {error && <p className="text-xs text-error mt-1.5">{error}</p>}
+      {!error && hint && <p className="text-xs text-text-muted mt-1.5">{hint}</p>}
     </div>
   )
 }
@@ -83,7 +83,7 @@ export function Select({ label, size = 'md', className = '', id, children, ...re
   return (
     <div className={className}>
       {label && (
-        <label htmlFor={selectId} className="block text-sm font-medium text-neutral-700 mb-1.5">
+        <label htmlFor={selectId} className="block text-sm font-medium text-text mb-1.5">
           {label}
         </label>
       )}
@@ -95,7 +95,7 @@ export function Select({ label, size = 'md', className = '', id, children, ...re
         >
           {children}
         </select>
-        <span className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-neutral-500">
+        <span className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-text-muted">
           <Icon name="chevron-down" size={14} />
         </span>
       </div>

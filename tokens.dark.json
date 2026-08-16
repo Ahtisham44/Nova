@@ -1,0 +1,31 @@
+{
+  "$description": "NOVA 2 · Dark mode overrides for the semantic tier (TA-04).\nSurfaces are inverted toward neutral.950, text toward neutral.50, and the\nbrand primary shifts to the light end of the nova scale (nova.200 base) so\nfilled actions keep AA contrast on dark backgrounds.",
+  "semantic": {
+    "color": {
+      "primary": { "value": "{global.color.nova.200}", "type": "color" },
+      "primaryHover": { "value": "{global.color.nova.100}", "type": "color" },
+      "primaryActive": { "value": "{global.color.nova.50}", "type": "color" },
+      "primaryDisabled": { "value": "{global.color.nova.800}", "type": "color" },
+      "primarySurface": { "value": "{global.color.nova.900}", "type": "color" },
+      "primaryBorder": { "value": "{global.color.nova.800}", "type": "color" },
+      "success": { "value": "{global.color.nova.400}", "type": "color" },
+      "warning": { "value": "{global.color.amber.400}", "type": "color" },
+      "error": { "value": "{global.color.red.300}", "type": "color" },
+      "info": { "value": "{global.color.blue.300}", "type": "color" },
+      "text": { "value": "{global.color.neutral.50}", "type": "color" },
+      "text.hover": { "value": "{global.color.neutral.100}", "type": "color" },
+      "text.muted": { "value": "{global.color.neutral.400}", "type": "color" },
+      "text.disabled": { "value": "{global.color.neutral.600}", "type": "color" },
+      "text.onPrimary": { "value": "{global.color.nova.900}", "type": "color" },
+      "surface": { "value": "{global.color.neutral.950}", "type": "color" },
+      "surface.hover": { "value": "{global.color.neutral.900}", "type": "color" },
+      "surface.active": { "value": "{global.color.neutral.800}", "type": "color" },
+      "surface.elevated": { "value": "{global.color.neutral.900}", "type": "color" },
+      "surface.overlay": { "value": "{global.color.neutral.800}", "type": "color" },
+      "border": { "value": "{global.color.neutral.800}", "type": "color" },
+      "borderStrong": { "value": "{global.color.neutral.700}", "type": "color" },
+      "borderFocus": { "value": "{global.color.nova.400}", "type": "color" },
+      "focusRing": { "value": "{global.color.nova.400}", "type": "color" }
+    }
+  }
+}

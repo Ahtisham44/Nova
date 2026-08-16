@@ -22,6 +22,7 @@ import {
 } from '@/components'
 import type { ButtonVariant, BadgeVariant } from '@/components'
 import { nova, neutral, semantic, intentPalette, gradients, spacing, radius, shadow, typeScale, duration, ease } from '@/tokens'
+import { useTheme } from './providers/ThemeProvider'
 import SendMoneyFlow from './SendMoneyFlow'
 
 // ─── Navigation ───────────────────────────────────────────────────────────────
@@ -276,6 +277,29 @@ function Frame({ children, className = '', style }: { children: ReactNode; class
   )
 }
 
+const THEME_META = {
+  light: { icon: 'sun', label: 'Light' },
+  dark: { icon: 'moon', label: 'Dark' },
+} as const
+
+/** Sidebar theme switcher — cycles Light → Dark. */
+function ThemeToggle() {
+  const { theme, cycle } = useTheme()
+  const meta = THEME_META[theme]
+  return (
+    <button
+      onClick={cycle}
+      aria-label={`Theme: ${meta.label}. Click to switch.`}
+      title={`Theme: ${meta.label}`}
+      className="w-full flex items-center gap-2.5 px-3 py-2 rounded-md text-[13px] text-white/70 hover:bg-white/10 active:bg-white/15 transition-colors"
+    >
+      <Icon name={meta.icon} size={15} className="text-white/80" />
+      <span className="font-medium">{meta.label}</span>
+      <span className="ml-auto text-[10px] text-white/40">Toggle</span>
+    </button>
+  )
+}
+
 // ─── Section: Overview ────────────────────────────────────────────────────────
 
 function OverviewSection() {
@@ -289,7 +313,7 @@ function OverviewSection() {
             </div>
             <div>
               <p className="text-white font-bold text-xl tracking-wider leading-none">NOVA</p>
-              <p className="text-green-200 text-[11px] font-medium mt-0.5">Design System · v1.0</p>
+              <p className="text-green-100 text-[11px] font-medium mt-0.5">Design System · v1.0</p>
             </div>
           </div>
           <h1 className="text-white font-bold leading-none mb-3 max-w-md" style={{ fontSize: typeScale.display.fontSize, lineHeight: '40px' }}>
@@ -407,7 +431,7 @@ function ColorsSection() {
           {SEMANTIC_COLORS.map(c => (
             <div key={c.name} className="rounded-lg overflow-hidden border border-neutral-200">
               <div className="h-20" style={{ backgroundColor: c.hex }} />
-              <div className="p-4 bg-white">
+              <div className="p-4 bg-surface-elevated">
                 <p className="font-semibold text-neutral-800 text-sm mb-1">{c.name}</p>
                 <p className="font-mono text-xs text-neutral-500 mb-2">{c.hex}</p>
                 <p className="text-xs text-neutral-500" style={{ lineHeight: '18px' }}>{c.desc}</p>
@@ -438,7 +462,7 @@ function ColorsSection() {
           {GRADIENTS.map(g => (
             <div key={g.name} className="rounded-lg overflow-hidden border border-neutral-200">
               <div className="h-24" style={{ background: g.gradient }} />
-              <div className="p-4 bg-white">
+              <div className="p-4 bg-surface-elevated">
                 <p className="font-semibold text-neutral-800 text-sm mb-1">{g.name}</p>
                 <p className="font-mono text-[9px] text-neutral-500 mb-2 leading-relaxed break-all">{g.token}</p>
                 <p className="text-xs text-neutral-500">{g.desc}</p>
@@ -643,7 +667,7 @@ function ElevationSection() {
         <div className="grid grid-cols-5 gap-4">
           {ELEVATION_LEVELS.map(lv => (
             <div key={lv.name} className="flex flex-col">
-              <div className="aspect-square rounded-lg bg-white mb-4" style={{ boxShadow: lv.shadow, border: lv.shadow === 'none' ? '1px solid #E5E5E5' : 'none' }} />
+              <div className="aspect-square rounded-lg bg-surface-elevated mb-4" style={{ boxShadow: lv.shadow, border: lv.shadow === 'none' ? '1px solid var(--color-border)' : 'none' }} />
               <p className="text-sm font-semibold text-neutral-800 mb-1">{lv.name}</p>
               <p className="font-mono text-[10px] text-nova-600 mb-2">{lv.token}</p>
               <p className="text-xs text-neutral-500" style={{ lineHeight: '18px' }}>{lv.desc}</p>
@@ -660,7 +684,7 @@ function ElevationSection() {
             { label: 'Card · Level 2', shadow: shadow.sm },
             { label: 'Modal · Level 3', shadow: shadow.md },
           ].map(ex => (
-            <div key={ex.label} className="bg-white rounded-lg p-5" style={{ boxShadow: ex.shadow }}>
+            <div key={ex.label} className="bg-surface-elevated rounded-lg p-5" style={{ boxShadow: ex.shadow }}>
               <div className="w-8 h-8 rounded-md bg-nova-50 flex items-center justify-center text-nova-600 mb-3">
                 <Icon name="dollar-sign" size={16} />
               </div>
@@ -758,9 +782,9 @@ function ButtonsSection() {
               Cancel
             </button>
           </div>
-          <div className="rounded-lg p-6 flex items-center justify-center gap-3 bg-neutral-950">
+          <div className="rounded-lg p-6 flex items-center justify-center gap-3 bg-surface-inverse">
             <Button variant="primary" icon="wallet">Add Funds</Button>
-            <button className="inline-flex items-center gap-2 px-4 h-10 rounded-md border border-neutral-700 text-neutral-300 text-sm font-medium hover:bg-neutral-800 transition-colors">
+            <button className="inline-flex items-center gap-2 px-4 h-10 rounded-md border border-white/20 text-white/70 text-sm font-medium hover:bg-white/10 transition-colors">
               View History
             </button>
           </div>
@@ -807,7 +831,7 @@ function InputsSection() {
             <TextInput defaultValue="$1,200.00" readOnly autoFocus />
           </div>
           <div>
-            <p className="text-xs font-medium text-red-600 mb-2">Error</p>
+            <p className="text-xs font-medium text-error mb-2">Error</p>
             <TextInput defaultValue="$50,000.00" readOnly error="Exceeds daily limit of $25,000" />
           </div>
           <div>
@@ -1259,9 +1283,9 @@ function TokensSection() {
         </Frame>
       </div>
 
-      <div className="flex border border-neutral-200 rounded-md overflow-hidden mb-6 w-fit bg-white">
+      <div className="flex border border-border rounded-md overflow-hidden mb-6 w-fit bg-surface-elevated">
         {(['primitive', 'semantic', 'component'] as const).map(t => (
-          <button key={t} onClick={() => setTab(t)} className="px-5 py-2.5 text-sm font-medium capitalize transition-colors" style={tab === t ? { backgroundColor: semantic.primary, color: '#FFF' } : { backgroundColor: 'transparent', color: '#737373' }}>
+          <button key={t} onClick={() => setTab(t)} className="px-5 py-2.5 text-sm font-medium capitalize transition-colors" style={tab === t ? { backgroundColor: semantic.primary, color: '#FFF' } : { backgroundColor: 'transparent', color: 'var(--color-text-muted)' }}>
             {t}
           </button>
         ))}
@@ -1388,7 +1412,7 @@ export default function App() {
 
   return (
     <div className="flex min-h-screen font-sans bg-neutral-50">
-      <aside className="fixed left-0 top-0 h-screen w-[230px] bg-neutral-950 flex flex-col overflow-hidden shrink-0">
+      <aside className="fixed left-0 top-0 h-screen w-[230px] bg-surface-inverse flex flex-col overflow-hidden shrink-0">
         <div className="px-5 py-5 border-b border-neutral-800/80">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-md flex items-center justify-center font-bold text-white text-[15px] shrink-0" style={{ background: gradients.hero }}>
@@ -1424,8 +1448,11 @@ export default function App() {
           ))}
         </nav>
 
-        <div className="px-5 py-4 border-t border-neutral-800/80">
-          <p className="text-[10px] text-neutral-700 leading-relaxed">Inter · 8px Grid<br />Tailwind CSS v4 · React 19</p>
+        <div className="px-3 pb-3">
+          <ThemeToggle />
+        </div>
+        <div className="px-5 py-4 border-t border-white/10">
+          <p className="text-[10px] text-white/40 leading-relaxed">Inter · 8px Grid<br />Tailwind CSS v4 · React 19</p>
         </div>
       </aside>
 

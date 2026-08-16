@@ -13,7 +13,7 @@ import {
   EmptyState,
   Skeleton,
 } from '@/components'
-import { nova, neutral, semantic, intentPalette, gradients, shadow, ease } from '@/tokens'
+import { nova, semantic, intentPalette, gradients, shadow, ease } from '@/tokens'
 
 /**
  * NOVA 2 · Send Money Flow.
@@ -77,7 +77,7 @@ function Screen({ active, children }: { active: boolean; children: ReactNode }) 
 
 function StatusBar() {
   return (
-    <div className="h-[46px] px-6 flex items-center justify-between flex-shrink-0 text-[13px] font-semibold" style={{ color: neutral[950] }}>
+    <div className="h-[46px] px-6 flex items-center justify-between flex-shrink-0 text-[13px] font-semibold" style={{ color: 'var(--color-neutral-950)' }}>
       <span>09:41</span>
       <div className="flex items-center gap-1.5">
         <span>5G</span>
@@ -88,8 +88,8 @@ function StatusBar() {
           <path d="M8.5 15.5a4.5 4.5 0 0 1 7 0" opacity=".7" />
           <circle cx="12" cy="18" r="1" />
         </svg>
-        <div className="w-5 h-2.5 border rounded-[3px] relative" style={{ borderColor: neutral[950] }}>
-          <span className="absolute inset-y-[1.5px] left-[1.5px] w-[60%] rounded-[1px]" style={{ background: neutral[950] }} />
+        <div className="w-5 h-2.5 border rounded-[3px] relative" style={{ borderColor: 'var(--color-neutral-950)' }}>
+          <span className="absolute inset-y-[1.5px] left-[1.5px] w-[60%] rounded-[1px]" style={{ background: 'var(--color-neutral-950)' }} />
         </div>
       </div>
     </div>
@@ -104,7 +104,7 @@ function NavBar({ title, onBack, right }: { title: string; onBack?: () => void; 
           <Icon name="arrow-right" size={20} className="rotate-180" />
         </Button>
       )}
-      <span className="text-[16px] font-semibold" style={{ color: neutral[900] }}>{title}</span>
+      <span className="text-[16px] font-semibold" style={{ color: 'var(--color-neutral-900)' }}>{title}</span>
       {right}
     </div>
   )
@@ -113,7 +113,7 @@ function NavBar({ title, onBack, right }: { title: string; onBack?: () => void; 
 function Progress({ value }: { value: number }) {
   return (
     <div className="px-5 pb-3.5 flex-shrink-0">
-      <div className="h-1 rounded-full bg-neutral-100 overflow-hidden">
+      <div className="h-1 rounded-full bg-surface-active overflow-hidden">
         <div className="h-full rounded-full transition-all" style={{ width: `${value}%`, background: gradients.accent }} />
       </div>
     </div>
@@ -122,12 +122,12 @@ function Progress({ value }: { value: number }) {
 
 function DetailRow({ k, v, mono, green }: { k: string; v: string; mono?: boolean; green?: boolean }) {
   return (
-    <div className="flex justify-between gap-4 py-2.5 border-b border-neutral-100 last:border-0">
-      <span className="text-[13px]" style={{ color: neutral[500] }}>{k}</span>
+    <div className="flex justify-between gap-4 py-2.5 border-b border-border last:border-0">
+      <span className="text-[13px]" style={{ color: 'var(--color-neutral-500)' }}>{k}</span>
       <span
         className="text-right font-medium"
         style={{
-          color: green ? nova[600] : neutral[900],
+          color: green ? nova[600] : 'var(--color-neutral-900)',
           fontSize: mono ? 12 : 13,
           fontFamily: mono ? 'ui-monospace, monospace' : undefined,
         }}
@@ -148,8 +148,8 @@ function LoadingScreen() {
         <div className="w-12 h-12 rounded-md grid place-items-center text-white text-lg font-bold mb-5" style={{ background: gradients.hero }}>
           N
         </div>
-        <p className="text-[15px] font-bold tracking-[0.08em] leading-none mb-1.5" style={{ color: neutral[950] }}>NOVA</p>
-        <p className="text-[11px] font-medium mb-9" style={{ color: neutral[400] }}>Securing your account…</p>
+        <p className="text-[15px] font-bold tracking-[0.08em] leading-none mb-1.5" style={{ color: 'var(--color-neutral-950)' }}>NOVA</p>
+        <p className="text-[11px] font-medium mb-9" style={{ color: 'var(--color-neutral-400)' }}>Securing your account…</p>
         <Spinner size={26} className="text-nova-600" />
       </div>
       <div className="px-5 pb-6 space-y-3">
@@ -191,7 +191,7 @@ function QuickTile({
       onClick={onClick}
       className="flex flex-col items-center gap-2 py-3.5 rounded-lg transition-all"
       style={{
-        background: featured ? gradients.card : 'transparent',
+        background: featured ? 'var(--gradient-card)' : 'transparent',
         border: featured ? `1px solid ${nova[100]}` : '1px solid transparent',
       }}
     >
@@ -200,12 +200,12 @@ function QuickTile({
         style={
           featured
             ? { background: nova[600], color: '#fff', boxShadow: shadow.sm }
-            : { background: neutral[100], color: neutral[600] }
+            : { background: 'var(--color-neutral-100)', color: 'var(--color-neutral-600)' }
         }
       >
         <Icon name={icon} size={20} />
       </div>
-      <span className="text-[11px] font-medium" style={{ color: neutral[600] }}>{label}</span>
+      <span className="text-[11px] font-medium" style={{ color: 'var(--color-neutral-600)' }}>{label}</span>
     </button>
   )
 }
@@ -216,7 +216,7 @@ function KeyButton({ children, onClick, ariaLabel }: { children: ReactNode; onCl
       variant="ghost"
       size="lg"
       className="!h-[60px] !w-full !rounded-md !px-0 !text-[22px]"
-      style={{ color: neutral[800] }}
+      style={{ color: 'var(--color-neutral-800)' }}
       onClick={onClick}
       aria-label={ariaLabel}
     >
@@ -240,23 +240,23 @@ function RecipientGroup({
   return (
     <div className="px-5 pb-4">
       <div className="flex items-center justify-between mb-1.5">
-        <span className="text-[12px] font-semibold uppercase tracking-wider" style={{ color: neutral[400] }}>{title}</span>
-        <span className="text-[11px]" style={{ color: neutral[400] }}>{count}</span>
+        <span className="text-[12px] font-semibold uppercase tracking-wider" style={{ color: 'var(--color-neutral-400)' }}>{title}</span>
+        <span className="text-[11px]" style={{ color: 'var(--color-neutral-400)' }}>{count}</span>
       </div>
       {items.map(r => (
         <Button
           key={r.id}
           variant="ghost"
-          className="!w-full !justify-start !h-auto !gap-3 !px-3 !py-2.5 !rounded-lg hover:!bg-neutral-50"
+          className="!w-full !justify-start !h-auto !gap-3 !px-3 !py-2.5 !rounded-lg hover:!bg-surface-hover"
           onClick={() => onPick(r)}
         >
           <Avatar label={r.name} size="md" color={r.color} />
           <span className="flex-1 min-w-0 text-left">
-            <span className="block text-[14px] font-medium truncate" style={{ color: neutral[900] }}>{r.name}</span>
-            <span className="block text-[12px] truncate" style={{ color: neutral[400] }}>{r.detail}</span>
+            <span className="block text-[14px] font-medium truncate" style={{ color: 'var(--color-neutral-900)' }}>{r.name}</span>
+            <span className="block text-[12px] truncate" style={{ color: 'var(--color-neutral-400)' }}>{r.detail}</span>
             {r.freq && <Badge variant="success" className="mt-1">Frequent</Badge>}
           </span>
-          <Icon name="chevron-right" size={16} className="flex-shrink-0" style={{ color: neutral[300] }} />
+          <Icon name="chevron-right" size={16} className="flex-shrink-0" style={{ color: 'var(--color-neutral-300)' }} />
         </Button>
       ))}
     </div>
@@ -408,8 +408,8 @@ export default function SendMoneyFlow() {
     <div
       className="font-sans min-h-screen flex justify-center px-6 py-10"
       style={{
-        background: `radial-gradient(1200px 600px at 85% -10%, rgba(22,163,74,0.08), transparent 60%), ${neutral[50]}`,
-        color: neutral[950],
+        background: `radial-gradient(1200px 600px at 85% -10%, rgba(22,163,74,0.08), transparent 60%), var(--color-neutral-50)`,
+        color: 'var(--color-neutral-950)',
       }}
     >
       <style>{`
@@ -428,13 +428,13 @@ export default function SendMoneyFlow() {
             N
           </div>
           <div>
-            <div className="font-extrabold tracking-[0.08em] text-[16px] leading-none" style={{ color: neutral[950] }}>NOVA</div>
-            <div className="text-[10px] font-medium mt-1" style={{ color: neutral[400] }}>Design System · v1.0</div>
+            <div className="font-extrabold tracking-[0.08em] text-[16px] leading-none" style={{ color: 'var(--color-neutral-950)' }}>NOVA</div>
+            <div className="text-[10px] font-medium mt-1" style={{ color: 'var(--color-neutral-400)' }}>Design System · v1.0</div>
           </div>
         </div>
 
-        <h1 className="text-[28px] font-bold tracking-tight leading-[1.15] mb-2.5" style={{ color: neutral[950] }}>Send Money Flow</h1>
-        <p className="text-[14px] leading-relaxed mb-7" style={{ color: neutral[500], lineHeight: 1.6 }}>
+        <h1 className="text-[28px] font-bold tracking-tight leading-[1.15] mb-2.5" style={{ color: 'var(--color-neutral-950)' }}>Send Money Flow</h1>
+        <p className="text-[14px] leading-relaxed mb-7" style={{ color: 'var(--color-neutral-500)', lineHeight: 1.6 }}>
           End-to-end mobile transfer journey, built entirely from NOVA tokens &amp; components: Home → Amount → Recipient → Review → Success.
         </p>
 
@@ -444,7 +444,7 @@ export default function SendMoneyFlow() {
             return (
               <div
                 key={s.id}
-                className="flex items-center gap-3 px-3 py-2.5 border-b border-neutral-100 last:border-0"
+                className="flex items-center gap-3 px-3 py-2.5 border-b border-border last:border-0"
                 style={state === 'active' ? { background: '#fff', boxShadow: shadow.xs } : {}}
               >
                 <span
@@ -454,15 +454,15 @@ export default function SendMoneyFlow() {
                       ? { background: nova[600], color: '#fff', borderColor: nova[600] }
                       : state === 'done'
                         ? { background: nova[50], color: nova[700], borderColor: nova[100] }
-                        : { background: neutral[100], color: neutral[400], borderColor: neutral[200] }
+                        : { background: 'var(--color-neutral-100)', color: 'var(--color-neutral-400)', borderColor: 'var(--color-neutral-200)' }
                   }
                 >
                   {state === 'done' ? '✓' : i + 1}
                 </span>
-                <span className="flex-1 text-[13px] font-medium" style={{ color: state === 'active' ? neutral[900] : neutral[400] }}>
+                <span className="flex-1 text-[13px] font-medium" style={{ color: state === 'active' ? 'var(--color-neutral-900)' : 'var(--color-neutral-400)' }}>
                   {s.label}
                 </span>
-                <span className="text-[11px]" style={{ color: neutral[400] }}>{s.sub}</span>
+                <span className="text-[11px]" style={{ color: 'var(--color-neutral-400)' }}>{s.sub}</span>
               </div>
             )
           })}
@@ -476,21 +476,21 @@ export default function SendMoneyFlow() {
           ))}
         </div>
 
-        <p className="text-[12px] leading-relaxed" style={{ color: neutral[400] }}>
+        <p className="text-[12px] leading-relaxed" style={{ color: 'var(--color-neutral-400)' }}>
           Interactive — tap through the phone, or use the quick-jump buttons above to inspect any screen. Amount keypad, recipient picker, add-new sheet, empty search state, and receipt export are all wired up.
         </p>
       </div>
 
       {/* ─── Phone ─── */}
       <div
-        className="w-[393px] h-[806px] flex-shrink-0 bg-neutral-950 rounded-[54px] p-3 relative"
+        className="w-[393px] h-[806px] flex-shrink-0 bg-surface-inverse rounded-[54px] p-3 relative"
         style={{ boxShadow: '0 40px 80px rgba(0,0,0,0.22), 0 12px 24px rgba(0,0,0,0.10)' }}
       >
-        <div className="relative w-full h-full bg-white rounded-[44px] overflow-hidden">
+        <div className="relative w-full h-full bg-surface-elevated rounded-[44px] overflow-hidden">
           {toastMsg && (
             <div
               className="absolute left-1/2 top-5 z-[60] flex items-center gap-2 rounded-lg px-4 py-2.5 text-[13px] font-medium text-white max-w-[88%] text-center"
-              style={{ background: neutral[950], boxShadow: shadow.md, animation: 'nova-toast 0.3s cubic-bezier(0,0,0.2,1)' }}
+              style={{ background: 'var(--color-surface-inverse)', boxShadow: shadow.md, animation: 'nova-toast 0.3s cubic-bezier(0,0,0.2,1)' }}
             >
               {toastMsg}
             </div>
@@ -507,8 +507,8 @@ export default function SendMoneyFlow() {
               <StatusBar />
               <div className="px-5 pt-1.5 pb-4 flex items-center gap-3">
                 <div className="flex-1 min-w-0">
-                  <h2 className="text-[18px] font-bold tracking-tight" style={{ color: neutral[900] }}>Good morning, James</h2>
-                  <p className="text-[12px]" style={{ color: neutral[400] }}>Sunday, Aug 16 2026 · San Francisco</p>
+                  <h2 className="text-[18px] font-bold tracking-tight" style={{ color: 'var(--color-neutral-900)' }}>Good morning, James</h2>
+                  <p className="text-[12px]" style={{ color: 'var(--color-neutral-400)' }}>Sunday, Aug 16 2026 · San Francisco</p>
                 </div>
                 <Button
                   variant="ghost"
@@ -518,7 +518,7 @@ export default function SendMoneyFlow() {
                   aria-label="Notifications"
                 >
                   <Icon name="bell" size={20} />
-                  <span className="absolute top-2 right-2 w-[7px] h-[7px] rounded-full border-[1.5px] border-white" style={{ background: semantic.error }} />
+                  <span className="absolute top-2 right-2 w-[7px] h-[7px] rounded-full border-[1.5px] border-surface-elevated" style={{ background: semantic.error }} />
                 </Button>
                 <Avatar label="James Mitchell" size="md" color={nova[600]} />
               </div>
@@ -534,10 +534,10 @@ export default function SendMoneyFlow() {
                 />
                 <div className="flex items-center gap-2 mb-6 mt-4 px-1">
                   <Badge variant="success" dot>Active</Badge>
-                  <span className="text-[12px]" style={{ color: neutral[500] }}>+$1,240 this month</span>
+                  <span className="text-[12px]" style={{ color: 'var(--color-neutral-500)' }}>+$1,240 this month</span>
                 </div>
 
-                <p className="text-[15px] font-semibold tracking-tight mb-3" style={{ color: neutral[950] }}>Quick actions</p>
+                <p className="text-[15px] font-semibold tracking-tight mb-3" style={{ color: 'var(--color-neutral-950)' }}>Quick actions</p>
                 <div className="grid grid-cols-4 gap-2 mb-6">
                   <QuickTile icon="send" label="Send Money" featured onClick={() => go('amount')} />
                   <QuickTile icon="arrow-up" label="Request" onClick={() => toast('Request money — coming soon')} />
@@ -556,7 +556,7 @@ export default function SendMoneyFlow() {
                   onViewAll={() => toast('Full history — coming soon')}
                 />
 
-                <div className="mt-5 flex items-center gap-3 rounded-lg border px-4 py-4" style={{ background: gradients.card, borderColor: nova[100] }}>
+                <div className="mt-5 flex items-center gap-3 rounded-lg border px-4 py-4" style={{ background: 'var(--gradient-card)', borderColor: nova[100] }}>
                   <div className="w-[38px] h-[38px] rounded-md grid place-items-center flex-shrink-0 text-white" style={{ background: nova[600] }}>
                     <Icon name="shield" size={18} />
                   </div>
@@ -581,16 +581,16 @@ export default function SendMoneyFlow() {
               <div className="flex-1 min-h-0 flex flex-col px-5 pb-5">
                 <div className="text-center pt-6 pb-1.5">
                   <div>
-                    <span className="text-[20px] font-medium mr-1.5" style={{ color: neutral[400] }}>$</span>
+                    <span className="text-[20px] font-medium mr-1.5" style={{ color: 'var(--color-neutral-400)' }}>$</span>
                     <span
                       className="text-[52px] font-bold leading-[1.1] tracking-tighter"
-                      style={{ fontVariantNumeric: 'tabular-nums', color: amtStr ? neutral[950] : neutral[300] }}
+                      style={{ fontVariantNumeric: 'tabular-nums', color: amtStr ? 'var(--color-neutral-950)' : 'var(--color-neutral-300)' }}
                     >
                       {amtStr || '0.00'}
                     </span>
                   </div>
-                  <p className="text-[13px] mt-2" style={{ color: neutral[400] }}>
-                    Available: <b style={{ color: neutral[700], fontWeight: 600 }}>$24,580.00</b>
+                  <p className="text-[13px] mt-2" style={{ color: 'var(--color-neutral-400)' }}>
+                    Available: <b style={{ color: 'var(--color-neutral-700)', fontWeight: 600 }}>$24,580.00</b>
                   </p>
                 </div>
 
@@ -608,7 +608,7 @@ export default function SendMoneyFlow() {
                     Continue
                     <Icon name="arrow-right" size={16} />
                   </Button>
-                  <div className="flex items-center justify-center gap-1.5 text-[11px] mt-2" style={{ color: neutral[400] }}>
+                  <div className="flex items-center justify-center gap-1.5 text-[11px] mt-2" style={{ color: 'var(--color-neutral-400)' }}>
                     <Icon name="shield" size={12} />
                     Free for NOVA accounts · Instant delivery
                   </div>
@@ -649,17 +649,17 @@ export default function SendMoneyFlow() {
                       <Icon name="plus" size={18} />
                     </span>
                     <span className="text-left">
-                      <span className="block text-[13px] font-semibold" style={{ color: neutral[800] }}>Add New</span>
-                      <span className="block text-[11px] font-normal" style={{ color: neutral[400] }}>Bank or phone</span>
+                      <span className="block text-[13px] font-semibold" style={{ color: 'var(--color-neutral-800)' }}>Add New</span>
+                      <span className="block text-[11px] font-normal" style={{ color: 'var(--color-neutral-400)' }}>Bank or phone</span>
                     </span>
                   </Button>
                   <Button variant="outline" className="!h-auto !justify-start !px-4 !py-3" onClick={syncContacts}>
-                    <span className="w-9 h-9 rounded-md grid place-items-center flex-shrink-0" style={{ background: neutral[100], color: neutral[600] }}>
+                    <span className="w-9 h-9 rounded-md grid place-items-center flex-shrink-0" style={{ background: 'var(--color-neutral-100)', color: 'var(--color-neutral-600)' }}>
                       <Icon name="refresh" size={18} />
                     </span>
                     <span className="text-left">
-                      <span className="block text-[13px] font-semibold" style={{ color: neutral[800] }}>Sync Contacts</span>
-                      <span className="block text-[11px] font-normal" style={{ color: neutral[400] }}>From this device</span>
+                      <span className="block text-[13px] font-semibold" style={{ color: 'var(--color-neutral-800)' }}>Sync Contacts</span>
+                      <span className="block text-[11px] font-normal" style={{ color: 'var(--color-neutral-400)' }}>From this device</span>
                     </span>
                   </Button>
                 </div>
@@ -692,67 +692,67 @@ export default function SendMoneyFlow() {
 
               <div className="flex-1 min-h-0 overflow-y-auto nova-scroll pb-5">
                 <div className="text-center pt-2 pb-5">
-                  <p className="text-[13px]" style={{ color: neutral[500] }}>You're sending</p>
-                  <p className="text-[42px] font-bold tracking-tighter mt-1" style={{ color: neutral[950] }}>{amt}</p>
-                  <p className="text-[12px]" style={{ color: neutral[400] }}>Instant · Free</p>
+                  <p className="text-[13px]" style={{ color: 'var(--color-neutral-500)' }}>You're sending</p>
+                  <p className="text-[42px] font-bold tracking-tighter mt-1" style={{ color: 'var(--color-neutral-950)' }}>{amt}</p>
+                  <p className="text-[12px]" style={{ color: 'var(--color-neutral-400)' }}>Instant · Free</p>
                 </div>
 
                 <Card padding="none" className="!rounded-lg">
                   <div className="flex items-center gap-3 px-5 py-3.5">
                     <Avatar label={selected?.name ?? '?'} size="md" color={selected?.color ?? nova[600]} />
                     <div className="flex-1 min-w-0">
-                      <div className="text-[12px]" style={{ color: neutral[400] }}>To</div>
-                      <div className="text-[14px] font-semibold truncate" style={{ color: neutral[900] }}>{selected?.name ?? 'No recipient selected'}</div>
-                      {selected && <div className="text-[13px] font-medium truncate" style={{ color: neutral[500] }}>{selected.detail}</div>}
+                      <div className="text-[12px]" style={{ color: 'var(--color-neutral-400)' }}>To</div>
+                      <div className="text-[14px] font-semibold truncate" style={{ color: 'var(--color-neutral-900)' }}>{selected?.name ?? 'No recipient selected'}</div>
+                      {selected && <div className="text-[13px] font-medium truncate" style={{ color: 'var(--color-neutral-500)' }}>{selected.detail}</div>}
                     </div>
                     <Button variant="ghost" size="sm" className="!shrink-0" onClick={() => go('recipient')}>Change</Button>
                   </div>
-                  <div className="flex items-center gap-3 px-5 py-3.5 border-t border-neutral-100">
+                  <div className="flex items-center gap-3 px-5 py-3.5 border-t border-border">
                     <div className="w-10 h-10 rounded-md grid place-items-center flex-shrink-0" style={{ background: nova[50], color: nova[600] }}>
                       <Icon name="wallet" size={18} />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="text-[12px]" style={{ color: neutral[400] }}>From</div>
-                      <div className="text-[14px] font-semibold" style={{ color: neutral[900] }}>Main Account</div>
-                      <div className="text-[13px] font-medium" style={{ color: neutral[500] }}>•••• 8291 · $24,580.00 available</div>
+                      <div className="text-[12px]" style={{ color: 'var(--color-neutral-400)' }}>From</div>
+                      <div className="text-[14px] font-semibold" style={{ color: 'var(--color-neutral-900)' }}>Main Account</div>
+                      <div className="text-[13px] font-medium" style={{ color: 'var(--color-neutral-500)' }}>•••• 8291 · $24,580.00 available</div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3 px-5 py-3.5 border-t border-neutral-100">
-                    <div className="w-10 h-10 rounded-md grid place-items-center flex-shrink-0" style={{ background: neutral[100], color: neutral[600] }}>
+                  <div className="flex items-center gap-3 px-5 py-3.5 border-t border-border">
+                    <div className="w-10 h-10 rounded-md grid place-items-center flex-shrink-0" style={{ background: 'var(--color-neutral-100)', color: 'var(--color-neutral-600)' }}>
                       <Icon name="clock" size={18} />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="text-[12px]" style={{ color: neutral[400] }}>Arrival</div>
-                      <div className="text-[14px] font-semibold" style={{ color: neutral[900] }}>Instantly</div>
-                      <div className="text-[13px] font-medium" style={{ color: neutral[500] }}>Estimated within seconds</div>
+                      <div className="text-[12px]" style={{ color: 'var(--color-neutral-400)' }}>Arrival</div>
+                      <div className="text-[14px] font-semibold" style={{ color: 'var(--color-neutral-900)' }}>Instantly</div>
+                      <div className="text-[13px] font-medium" style={{ color: 'var(--color-neutral-500)' }}>Estimated within seconds</div>
                     </div>
                   </div>
                 </Card>
 
                 <div className="mt-4">
-                  <div className="flex justify-between items-center px-5 text-[13px]" style={{ color: neutral[500] }}>
+                  <div className="flex justify-between items-center px-5 text-[13px]" style={{ color: 'var(--color-neutral-500)' }}>
                     <span>Transfer amount</span>
-                    <span className="font-bold" style={{ color: neutral[950] }}>{amt}</span>
+                    <span className="font-bold" style={{ color: 'var(--color-neutral-950)' }}>{amt}</span>
                   </div>
-                  <div className="flex justify-between items-center px-5 mt-1.5 text-[13px]" style={{ color: neutral[500] }}>
+                  <div className="flex justify-between items-center px-5 mt-1.5 text-[13px]" style={{ color: 'var(--color-neutral-500)' }}>
                     <span>NOVA fee</span>
                     <span className="font-medium" style={{ color: nova[600] }}>Free</span>
                   </div>
-                  <div className="mt-3 rounded-lg border px-5 py-3.5" style={{ background: gradients.card, borderColor: nova[100] }}>
+                  <div className="mt-3 rounded-lg border px-5 py-3.5" style={{ background: 'var(--gradient-card)', borderColor: nova[100] }}>
                     <div className="flex justify-between items-center">
-                      <span className="font-semibold" style={{ color: neutral[900] }}>Total</span>
-                      <span className="text-[16px] font-bold" style={{ color: neutral[950] }}>{amt}</span>
+                      <span className="font-semibold" style={{ color: 'var(--color-neutral-900)' }}>Total</span>
+                      <span className="text-[16px] font-bold" style={{ color: 'var(--color-neutral-950)' }}>{amt}</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-center gap-2 mt-4 text-[11px]" style={{ color: neutral[400] }}>
+                <div className="flex items-center justify-center gap-2 mt-4 text-[11px]" style={{ color: 'var(--color-neutral-400)' }}>
                   <Icon name="lock" size={13} style={{ color: nova[600] }} />
                   Bank-level security · 2FA enabled
                 </div>
               </div>
 
-              <div className="px-5 pt-4 pb-3.5 border-t border-neutral-100 bg-white">
+              <div className="px-5 pt-4 pb-3.5 border-t border-border bg-surface-elevated">
                 <Button variant="primary" size="lg" icon="send" className="w-full" onClick={confirmTransfer}>
                   <span>Confirm &amp; Send {amt}</span>
                 </Button>
@@ -765,26 +765,26 @@ export default function SendMoneyFlow() {
             <div className="flex flex-col h-full">
               <StatusBar />
               <div className="flex-1 min-h-0 overflow-y-auto nova-scroll pb-5">
-                <div className="text-center px-5 pt-7 pb-6" style={{ background: gradients.surface }}>
+                <div className="text-center px-5 pt-7 pb-6" style={{ background: 'var(--gradient-surface)' }}>
                   <div
                     className="w-[92px] h-[92px] mx-auto mb-4 rounded-full border-2 grid place-items-center"
                     style={{ background: nova[50], borderColor: nova[100], color: nova[600] }}
                   >
                     <Icon name="check-circle" size={40} strokeWidth={2.25} style={{ animation: 'nova-pop 0.5s cubic-bezier(0.34,1.56,0.64,1) both' }} />
                   </div>
-                  <h2 className="text-[24px] font-bold tracking-tight" style={{ color: neutral[950] }}>Payment Sent</h2>
-                  <p className="text-[34px] font-bold tracking-tighter mt-1.5" style={{ color: neutral[950] }}>{amt}</p>
-                  <p className="text-[13px] mt-2" style={{ color: neutral[500] }}>
-                    To <b style={{ color: neutral[700] }}>{selected?.name ?? '—'}</b> · Today, 09:41 AM
+                  <h2 className="text-[24px] font-bold tracking-tight" style={{ color: 'var(--color-neutral-950)' }}>Payment Sent</h2>
+                  <p className="text-[34px] font-bold tracking-tighter mt-1.5" style={{ color: 'var(--color-neutral-950)' }}>{amt}</p>
+                  <p className="text-[13px] mt-2" style={{ color: 'var(--color-neutral-500)' }}>
+                    To <b style={{ color: 'var(--color-neutral-700)' }}>{selected?.name ?? '—'}</b> · Today, 09:41 AM
                   </p>
                 </div>
 
                 <Card padding="none" className="!rounded-lg relative z-10 -mt-[18px] mx-5 mb-4 !px-4 !py-3.5 flex items-center gap-3" style={{ boxShadow: shadow.sm }}>
                   <Avatar label={selected?.name ?? '?'} size="md" color={selected?.color ?? nova[600]} />
                   <div className="flex-1 min-w-0">
-                    <div className="text-[11px]" style={{ color: neutral[400] }}>Recipient</div>
-                    <div className="text-[14px] font-semibold truncate" style={{ color: neutral[900] }}>{selected?.name ?? '—'}</div>
-                    <div className="text-[12px] truncate" style={{ color: neutral[400] }}>{selected?.detail ?? '—'}</div>
+                    <div className="text-[11px]" style={{ color: 'var(--color-neutral-400)' }}>Recipient</div>
+                    <div className="text-[14px] font-semibold truncate" style={{ color: 'var(--color-neutral-900)' }}>{selected?.name ?? '—'}</div>
+                    <div className="text-[12px] truncate" style={{ color: 'var(--color-neutral-400)' }}>{selected?.detail ?? '—'}</div>
                   </div>
                   <Badge variant="success" dot className="shrink-0">Delivered</Badge>
                 </Card>
@@ -812,13 +812,13 @@ export default function SendMoneyFlow() {
           {sheet === 'add' && (
             <div className="absolute inset-0 z-50 flex items-end" style={{ background: 'rgba(10,10,10,0.5)' }} onClick={() => setSheet(null)}>
               <div
-                className="w-full bg-white rounded-t-[24px] px-5 pb-10 pt-2"
+                className="w-full bg-surface-elevated rounded-t-[24px] px-5 pb-10 pt-2"
                 onClick={e => e.stopPropagation()}
                 style={{ animation: 'nova-sheet-up 0.3s cubic-bezier(0,0,0.2,1)' }}
               >
-                <div className="w-10 h-1 rounded-full mx-auto mb-4" style={{ background: neutral[200] }} />
-                <p className="text-[17px] font-bold mb-1" style={{ color: neutral[900] }}>Add New Recipient</p>
-                <p className="text-[13px] mb-4" style={{ color: neutral[500] }}>They'll be saved to your recipients for future transfers.</p>
+                <div className="w-10 h-1 rounded-full mx-auto mb-4" style={{ background: 'var(--color-neutral-200)' }} />
+                <p className="text-[17px] font-bold mb-1" style={{ color: 'var(--color-neutral-900)' }}>Add New Recipient</p>
+                <p className="text-[13px] mb-4" style={{ color: 'var(--color-neutral-500)' }}>They'll be saved to your recipients for future transfers.</p>
                 <div className="space-y-3.5">
                   <TextInput id="nrName" label="Full name" placeholder="e.g. Alex Rivera" autoComplete="off" value={nrName} onChange={e => setNrName(e.target.value)} />
                   <TextInput id="nrDetail" label="Phone number or email" placeholder="+1 (555) 000-0000" autoComplete="off" value={nrDetail} onChange={e => setNrDetail(e.target.value)} />

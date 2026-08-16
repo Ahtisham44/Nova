@@ -20,13 +20,13 @@ export type ButtonVariant =
 export type ButtonSize = 'sm' | 'md' | 'lg'
 
 const VARIANTS: Record<ButtonVariant, string> = {
-  primary: 'bg-primary text-white hover:bg-primary-hover active:bg-nova-800',
-  secondary: 'bg-primary-surface text-nova-700 border border-primary-border hover:bg-nova-100 hover:border-nova-200 active:bg-nova-200',
-  ghost: 'bg-transparent text-nova-600 hover:bg-primary-surface active:bg-nova-100',
-  outline: 'bg-transparent text-neutral-900 border border-border hover:bg-neutral-50 active:bg-neutral-100',
-  destructive: 'bg-error text-white hover:bg-red-700 active:bg-red-800',
-  black: 'bg-neutral-950 text-white hover:bg-neutral-800 active:bg-neutral-700',
-  white: 'bg-white text-neutral-900 border border-border hover:bg-neutral-50 active:bg-neutral-100',
+  primary: 'bg-primary text-text-on-primary hover:bg-primary-hover active:bg-primary-active',
+  secondary: 'bg-primary-surface text-primary border border-primary-border hover:bg-primary-hover hover:text-text-on-primary active:bg-primary-active active:text-text-on-primary',
+  ghost: 'bg-transparent text-primary hover:bg-primary-surface active:bg-primary-border',
+  outline: 'bg-transparent text-text border border-border hover:bg-surface-hover active:bg-surface-active',
+  destructive: 'bg-error-strong text-white hover:bg-red-700 active:bg-red-800',
+  black: 'bg-surface-inverse text-white hover:bg-surface-inverse-hover active:bg-surface-inverse-active',
+  white: 'bg-surface-elevated text-text border border-border hover:bg-surface-hover active:bg-surface-active',
 }
 
 const SIZES: Record<ButtonSize, string> = {
@@ -54,7 +54,7 @@ export default function Button({
   disabled,
   ...rest
 }: ButtonProps) {
-  const base = 'inline-flex items-center justify-center rounded-md font-medium transition-colors shrink-0'
+  const base = 'inline-flex items-center justify-center rounded-md font-medium transition-colors shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-focus focus-visible:ring-offset-2 focus-visible:ring-offset-surface'
   const states = 'disabled:cursor-not-allowed disabled:bg-neutral-200 disabled:text-neutral-400 disabled:border-neutral-200 disabled:pointer-events-none'
 
   return (

@@ -1,6 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 @import 'tailwindcss';
 
+/* Class-driven dark variant (managed by ThemeProvider). */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
 
@@ -29,25 +32,39 @@
   --color-neutral-900: #171717;
   --color-neutral-950: #0A0A0A;
 
-  /* ─── Semantic · Intent colors ───────────────────────────────────── */
-  --color-success: #16A34A;
-  --color-warning: #F59E0B;
-  --color-error: #DC2626;
-  --color-info: #2563EB;
+  /* ─── Semantic · Intent colors (resolved per theme) ──────────────── */
+  --color-success: var(--ds-success);
+  --color-warning: var(--ds-warning);
+  --color-error: var(--ds-error);
+  --color-info: var(--ds-info);
 
-  /* ─── Semantic · Role-based aliases ──────────────────────────────── */
-  --color-primary: var(--color-nova-600);
-  --color-primary-hover: var(--color-nova-700);
-  --color-primary-surface: var(--color-nova-50);
-  --color-primary-border: var(--color-nova-100);
-  --color-text: var(--color-neutral-950);
-  --color-text-secondary: var(--color-neutral-500);
-  --color-text-disabled: var(--color-neutral-400);
-  --color-surface: var(--color-neutral-50);
-  --color-surface-raised: #FFFFFF;
-  --color-surface-overlay: var(--color-neutral-100);
-  --color-border: var(--color-neutral-200);
-  --color-border-strong: var(--color-neutral-300);
+  /* ─── Semantic · Role-based aliases (resolved per theme) ─────────── */
+  --color-primary: var(--ds-primary);
+  --color-primary-hover: var(--ds-primary-hover);
+  --color-primary-active: var(--ds-primary-active);
+  --color-primary-disabled: var(--ds-primary-disabled);
+  --color-primary-surface: var(--ds-primary-surface);
+  --color-primary-border: var(--ds-primary-border);
+  --color-text: var(--ds-text);
+  --color-text-hover: var(--ds-text-hover);
+  --color-text-muted: var(--ds-text-muted);
+  --color-text-disabled: var(--ds-text-disabled);
+  --color-text-on-primary: var(--ds-text-on-primary);
+  --color-text-secondary: var(--ds-text-muted); /* legacy alias */
+  --color-surface: var(--ds-surface);
+  --color-surface-hover: var(--ds-surface-hover);
+  --color-surface-active: var(--ds-surface-active);
+  --color-surface-elevated: var(--ds-surface-elevated);
+  --color-surface-raised: var(--ds-surface-elevated); /* legacy alias */
+  --color-surface-overlay: var(--ds-surface-overlay);
+  --color-surface-inverse: var(--ds-surface-inverse);
+  --color-surface-inverse-hover: var(--ds-surface-inverse-hover);
+  --color-surface-inverse-active: var(--ds-surface-inverse-active);
+  --color-border: var(--ds-border);
+  --color-border-strong: var(--ds-border-strong);
+  --color-border-focus: var(--ds-border-focus);
+  --color-focus-ring: var(--ds-focus-ring);
+  --color-error-strong: var(--ds-error-strong);
 
   /* ─── Radius scale ───────────────────────────────────────────────── */
   --radius-sm: 4px;
@@ -74,6 +91,92 @@
   --duration-slower: 700ms;
 }
 
+/* ═══ Theme values · Light (default) ══════════════════════════════════ */
+:root {
+  color-scheme: light;
+
+  --ds-primary: #15803D;
+  --ds-primary-hover: #166534;
+  --ds-primary-active: #14532D;
+  --ds-primary-disabled: #86EFAC;
+  --ds-primary-surface: #F0FDF4;
+  --ds-primary-border: #DCFCE7;
+  --ds-success: #15803D;
+  --ds-warning: #B45309;
+  --ds-error: #DC2626;
+  --ds-info: #2563EB;
+  --ds-text: #0A0A0A;
+  --ds-text-hover: #171717;
+  --ds-text-muted: #737373;
+  --ds-text-disabled: #A3A3A3;
+  --ds-text-on-primary: #FFFFFF;
+  --ds-surface: #FAFAFA;
+  --ds-surface-hover: #F5F5F5;
+  --ds-surface-active: #E5E5E5;
+  --ds-surface-elevated: #FFFFFF;
+  --ds-surface-overlay: #F5F5F5;
+  --ds-surface-inverse: #0A0A0A;
+  --ds-surface-inverse-hover: #262626;
+  --ds-surface-inverse-active: #404040;
+  --ds-border: #E5E5E5;
+  --ds-border-strong: #D4D4D4;
+  --ds-border-focus: #15803D;
+  --ds-focus-ring: #15803D;
+  --ds-error-strong: #DC2626;
+}
+
+/* ═══ Theme values · Dark ═════════════════════════════════════════════ */
+.dark {
+  color-scheme: dark;
+
+  /* Semantic overrides (see tokens.dark.json) */
+  --ds-primary: #BBF7D0;
+  --ds-primary-hover: #DCFCE7;
+  --ds-primary-active: #F0FDF4;
+  --ds-primary-disabled: #166534;
+  --ds-primary-surface: #14532D;
+  --ds-primary-border: #166534;
+  --ds-success: #4ADE80;
+  --ds-warning: #FBBF24;
+  --ds-error: #FCA5A5;
+  --ds-info: #93C5FD;
+  --ds-text: #FAFAFA;
+  --ds-text-hover: #F5F5F5;
+  --ds-text-muted: #A3A3A3;
+  --ds-text-disabled: #525252;
+  --ds-text-on-primary: #14532D;
+  --ds-surface: #0A0A0A;
+  --ds-surface-hover: #171717;
+  --ds-surface-active: #262626;
+  --ds-surface-elevated: #171717;
+  --ds-surface-overlay: #262626;
+  --ds-surface-inverse: #0A0A0A;
+  --ds-surface-inverse-hover: #262626;
+  --ds-surface-inverse-active: #404040;
+  --ds-border: #6B6B6B;
+  --ds-border-strong: #7A7A7A;
+  --ds-border-focus: #4ADE80;
+  --ds-focus-ring: #4ADE80;
+  --ds-error-strong: #DC2626;
+
+  /* Flip the neutral ramp so scale-driven utilities adapt automatically */
+  --color-neutral-50: #0A0A0A;
+  --color-neutral-100: #171717;
+  --color-neutral-200: #262626;
+  --color-neutral-300: #404040;
+  --color-neutral-400: #525252;
+  --color-neutral-500: #808080;
+  --color-neutral-600: #A3A3A3;
+  --color-neutral-700: #D4D4D4;
+  --color-neutral-800: #E5E5E5;
+  --color-neutral-900: #F5F5F5;
+  --color-neutral-950: #FAFAFA;
+
+  /* Gradients adapted to dark surfaces */
+  --gradient-surface: linear-gradient(180deg, #0A0A0A 0%, #171717 100%);
+  --gradient-card: linear-gradient(135deg, rgba(22,163,74,0.22) 0%, rgba(34,197,94,0.08) 100%);
+}
+
 /* ─── Full token surface (docs + component tiers) ──────────────────────── */
 :root {
   /* Spacing · 8px grid
@@ -97,7 +200,7 @@
   /* Radius · full token (includes pill) */
   --radius-full: 9999px;
 
-  /* Typography · size + line-height */
+  /* Typography · size + line-height (dimension primitives) */
   --font-size-display: 40px;
   --font-size-h1: 32px;
   --font-size-h2: 24px;
@@ -117,7 +220,7 @@
   --line-height-caption: 16px;
 
   /* Gradients */
-  --gradient-hero: linear-gradient(135deg, #16A34A 0%, #166534 100%);
+  --gradient-hero: linear-gradient(135deg, #15803D 0%, #166534 100%);
   --gradient-surface: linear-gradient(180deg, #F0FDF4 0%, #FFFFFF 100%);
   --gradient-card: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%);
   --gradient-accent: linear-gradient(90deg, #16A34A 0%, #22C55E 100%);

@@ -29,8 +29,8 @@ export default function EmptyState({
   title,
   description,
   action,
-  iconBackground = '#F5F5F5',
-  iconColor = '#737373',
+  iconBackground = 'var(--color-surface-active)',
+  iconColor = 'var(--color-text-muted)',
 }: EmptyStateProps) {
   return (
     <div className="p-8 flex flex-col items-center text-center">
@@ -40,8 +40,8 @@ export default function EmptyState({
       >
         <Icon name={icon} size={26} />
       </div>
-      <p className="text-base font-semibold text-neutral-900 mb-2">{title}</p>
-      <p className="text-sm text-neutral-500 max-w-xs mb-5" style={{ lineHeight: '21px' }}>
+      <p className="text-base font-semibold text-text mb-2">{title}</p>
+      <p className="text-sm text-text-muted max-w-xs mb-5" style={{ lineHeight: '21px' }}>
         {description}
       </p>
       {action && (
@@ -59,5 +59,5 @@ export default function EmptyState({
  * being loaded.
  */
 export function Skeleton({ className = '', style }: { className?: string; style?: CSSProperties }) {
-  return <div className={`bg-neutral-100 rounded-md animate-pulse ${className}`} style={style} />
+  return <div className={`bg-surface-active rounded-md animate-pulse ${className}`} style={style} />
 }

@@ -30,7 +30,7 @@ export interface AvatarProps {
   className?: string
 }
 
-export default function Avatar({ label, size = 'md', color = '#16A34A', status, className = '' }: AvatarProps) {
+export default function Avatar({ label, size = 'md', color = '#166534', status, className = '' }: AvatarProps) {
   const { px, font } = SIZES[size]
   const initials = label.trim().slice(0, 2).toUpperCase()
 
@@ -45,7 +45,7 @@ export default function Avatar({ label, size = 'md', color = '#16A34A', status, 
       </div>
       {status && (
         <span
-          className="absolute bottom-0 right-0 rounded-full border-2 border-white"
+          className="absolute bottom-0 right-0 rounded-full border-2 border-surface-elevated"
           style={{ width: px * 0.3, height: px * 0.3, backgroundColor: STATUS_COLORS[status] }}
         />
       )}
@@ -68,13 +68,13 @@ export function AvatarGroup({ items, size = 'md', max = 4, more = 0 }: AvatarGro
   return (
     <div className="flex items-center">
       {visible.map((item, i) => (
-        <div key={i} className="relative border-2 border-white rounded-full" style={{ marginLeft: i === 0 ? 0 : overlap, zIndex: visible.length - i }}>
+        <div key={i} className="relative border-2 border-surface-elevated rounded-full" style={{ marginLeft: i === 0 ? 0 : overlap, zIndex: visible.length - i }}>
           <Avatar label={item.label} size={size} color={item.color ?? '#16A34A'} />
         </div>
       ))}
       {(more > 0 || items.length > max) && (
         <div
-          className="relative rounded-full border-2 border-white bg-neutral-100 text-neutral-600 font-semibold flex items-center justify-center select-none"
+          className="relative rounded-full border-2 border-surface-elevated bg-surface-active text-text-muted font-semibold flex items-center justify-center select-none"
           style={{ width: px, height: px, marginLeft: overlap, zIndex: 0, fontSize: font * 0.85 }}
         >
           +{more > 0 ? more : items.length - max}

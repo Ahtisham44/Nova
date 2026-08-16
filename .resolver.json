@@ -1,0 +1,73 @@
+{
+  "$schema": "https://design-tokens.github.io/resolver-spec/resolver.json",
+  "version": 1,
+  "tokenSets": [
+    {
+      "name": "nova2-light",
+      "files": ["tokens.json"],
+      "format": "dtcg",
+      "targets": ["css", "json", "typescript"]
+    },
+    {
+      "name": "nova2-dark",
+      "files": ["tokens.json", "tokens.dark.json"],
+      "format": "dtcg",
+      "targets": ["css", "json", "typescript"]
+    }
+  ],
+  "resolution": {
+    "strategy": "layered",
+    "layers": [
+      "global.color.nova",
+      "global.color.neutral",
+      "global.color.white",
+      "global.color.amber",
+      "global.color.red",
+      "global.color.blue",
+      "global.color.semantic",
+      "global.spacing",
+      "global.dimension.font.size",
+      "global.dimension.lineHeight",
+      "global.borderRadius",
+      "global.boxShadow",
+      "global.typography",
+      "semantic.color"
+    ],
+    "merge": "deep",
+    "fallback": "previous-layer"
+  },
+  "platforms": {
+    "css": {
+      "transformGroup": "css",
+      "buildPath": "dist/tokens/",
+      "files": [
+        {
+          "destination": "nova2-light.css",
+          "format": "css/variables",
+          "options": { "selector": ":root" }
+        },
+        {
+          "destination": "nova2-dark.css",
+          "format": "css/variables",
+          "options": { "selector": ".dark" }
+        }
+      ]
+    },
+    "json": {
+      "transformGroup": "js",
+      "buildPath": "dist/tokens/",
+      "files": [
+        { "destination": "nova2-light.json", "format": "json/flat" },
+        { "destination": "nova2-dark.json", "format": "json/flat" }
+      ]
+    },
+    "typescript": {
+      "transformGroup": "js",
+      "buildPath": "src/tokens/generated/",
+      "files": [
+        { "destination": "nova2-light.ts", "format": "typescript/module-deep" },
+        { "destination": "nova2-dark.ts", "format": "typescript/module-deep" }
+      ]
+    }
+  }
+}
