@@ -22,6 +22,7 @@ import {
 } from '@/components'
 import type { ButtonVariant, BadgeVariant } from '@/components'
 import { nova, neutral, semantic, intentPalette, gradients, spacing, radius, shadow, typeScale, duration, ease } from '@/tokens'
+import SendMoneyFlow from './SendMoneyFlow'
 
 // ─── Navigation ───────────────────────────────────────────────────────────────
 
@@ -29,9 +30,13 @@ type NavId =
   | 'overview' | 'colors' | 'typography' | 'spacing'
   | 'radius' | 'elevation' | 'motion'
   | 'buttons' | 'inputs' | 'cards' | 'badges' | 'icons' | 'states'
-  | 'tokens'
+  | 'tokens' | 'flow'
 
 const NAV: { group: string; items: { id: NavId; label: string }[] }[] = [
+  {
+    group: 'Demo',
+    items: [{ id: 'flow', label: 'Send Money Flow' }],
+  },
   {
     group: 'Foundation',
     items: [
@@ -1378,6 +1383,7 @@ export default function App() {
     icons: <IconsSection />,
     states: <StatesSection />,
     tokens: <TokensSection />,
+    flow: <SendMoneyFlow />,
   }
 
   return (
@@ -1424,9 +1430,13 @@ export default function App() {
       </aside>
 
       <main className="ml-[230px] flex-1 min-h-screen">
-        <div className="max-w-[880px] mx-auto px-8 py-10">
-          {SECTIONS[active]}
-        </div>
+        {active === 'flow' ? (
+          <SendMoneyFlow />
+        ) : (
+          <div className="max-w-[880px] mx-auto px-8 py-10">
+            {SECTIONS[active]}
+          </div>
+        )}
       </main>
     </div>
   )
